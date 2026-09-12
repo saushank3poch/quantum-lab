@@ -151,3 +151,20 @@
 /* Once a result arrives, give its explanation the space used by the setup. */
 .learning.has-result #learn-title, .learning.has-result #learn-intro { display: none; }
 .learning.has-result #learn-group { margin-bottom: 20px; }
+
+/* Keep all header shortcuts reachable on narrow screens. */
+@media (max-width: 600px) {
+  .topbar { padding-left: 12px; padding-right: 12px; gap: 12px; }
+  .topbar .brand > span:last-child { display: none; }
+  .topbar .header-actions { gap: 10px; }
+  .topbar .text-button { white-space: nowrap; font-size: 12px; }
+  .topbar .text-button span { margin-left: 2px; }
+}
+@media (max-width: 390px) {
+  .topbar .header-actions { gap: 8px; }
+  .topbar .text-button { font-size: 11px; }
+}
+@media (max-width: 350px) {
+  body:not(.learning) .topbar .header-actions { min-width: 0; flex-wrap: wrap; justify-content: flex-end; row-gap: 0; }
+  body:not(.learning) .topbar .text-button { padding-top: 3px; padding-bottom: 3px; }
+}

@@ -258,6 +258,7 @@
   }
   function init() {
     root.Power.init();
+    $('walkthrough-open').addEventListener('click',openWalkthrough);
     $('learn-power-again').addEventListener('click',function(){root.Power.open(finishBasics);});
     $('learn-run').addEventListener('click',run);
     $('learn-next').addEventListener('click',next);
@@ -269,9 +270,13 @@
     $('learning-mode').addEventListener('click',function(){if(api.active)exit();else enter();});
     document.querySelectorAll('[data-target]').forEach(function(b){b.addEventListener('click',function(){state.target=Number(b.dataset.target);resetExperiment();});});
     enter();
-    if(root.location.hash==='#advantage') {
-      state.index=5;state.unlocked=5;resetExperiment();root.Power.open(finishBasics);
-    }
+    if(root.location.hash==='#advantage')openWalkthrough();
+  }
+  function openWalkthrough() {
+    if(!$('power-view').hidden){$('power-title').focus();return;}
+    if(!api.active)enter();
+    state.index=5;state.unlocked=Math.max(state.unlocked,5);
+    resetExperiment();root.Power.open(finishBasics);
   }
   function update(dt) {
     if(!api.active || !state.busy || $('about').open) return;
