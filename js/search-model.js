@@ -8,11 +8,15 @@
     var vector=Array(size).fill(1/Math.sqrt(size));
     var rounds=Math.floor(Math.PI/(4*Math.asin(1/Math.sqrt(size))));
     var chances=[vector[target]*vector[target]];
+    var frames=[{kind:'prepare',round:0,vector:vector.slice()}];
     for(var i=0;i<rounds;i++) {
-      vector=Q.diffuse(Q.oracle(vector,target));
+      vector=Q.oracle(vector,target);
+      frames.push({kind:'phase',round:i+1,vector:vector.slice()});
+      vector=Q.diffuse(vector);
+      frames.push({kind:'interference',round:i+1,vector:vector.slice()});
       chances.push(vector[target]*vector[target]);
     }
-    return {size:size,target:target,vector:vector,rounds:rounds,chances:chances,
+    return {size:size,target:target,vector:vector,rounds:rounds,chances:chances,frames:frames,
       probability:Math.min(1,chances[rounds]),classicalAverage:(size+1)/2};
   }
   function classical(problem) {

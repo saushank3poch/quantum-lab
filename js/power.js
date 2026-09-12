@@ -32,6 +32,8 @@
     $('power-grid-note').textContent='Match: '+(p.target+1)+'. Shaded cells show the ordinary scan. Green is its confirmed match.';
     $('power-odds').innerHTML='<p><strong>How interference changes the chance of a correct reading</strong></p><p class="power-chart-hint">Scroll across the chart to see every round →</p><div class="power-odds-steps" tabindex="0" role="region" aria-label="Chance of success after each round">'+p.chances.map(function(chance,i){return '<div><span>'+(i===0?'Start':'Round '+i)+'</span><b>'+percent(chance)+'</b><i style="height:'+Math.max(2,80*chance)+'px"></i></div>';}).join('')+'</div><p class="power-small">Calculated by the simulator. A quantum computer’s single reading does not reveal this chart.</p>';
     $('power-result').hidden=false;
+    $('power-summary').open=false;
+    root.SearchReplay.show(p,r,state.attempts);
     $('power-verdict').textContent=!r.success?'This quantum attempt missed. Its checks still count.':state.checks<c.checks?'Quantum used fewer checks on this run.':state.checks===c.checks?'The methods tied on this run.':'The ordinary scan used fewer checks on this run.';
     $('power-how').textContent='The ordinary search checked candidates in order until it reached '+(p.target+1)+'. The quantum search used '+p.rounds+' rounds to raise the match’s chance from '+percent(1/p.size)+' to '+percent(p.probability)+', then read just one candidate. '+(r.success?'Its final check confirmed that candidate was the match.':'A high chance is not a guarantee: this reading was a non-match, which the final check caught.');
     $('power-pattern').textContent='Across uniformly hidden targets, the ordinary scan averages '+p.classicalAverage+' checks. Each quantum attempt uses '+(p.rounds+1)+' and succeeds '+percent(p.probability)+' of the time. Retries add checks. Increase the problem size to see how the work grows.';
@@ -45,11 +47,12 @@
   function retry() {
     state.result=M.attempt(state.problem);state.checks+=state.result.checks;state.attempts++;
     renderResult();
+    $('search-replay').scrollIntoView({block:'start',behavior:'instant'});
   }
   function open(done) {
     returnFocus=document.activeElement;
     onDone=done;reset();
-    $('power-view').querySelector('details').open=false;
+    $('power-view').querySelectorAll('details').forEach(function(el){el.open=false;});
     document.body.classList.add('showing-power');$('power-view').hidden=false;
     $('power-view').scrollTop=0;$('power-title').focus();
   }
@@ -58,6 +61,7 @@
     if(returnFocus && returnFocus.isConnected)returnFocus.focus({preventScroll:true});
   }
   function init() {
+    root.SearchReplay.init();
     document.querySelectorAll('[data-search-size]').forEach(function(b){b.addEventListener('click',function(){state.size=Number(b.dataset.searchSize);reset();});});
     $('power-run').addEventListener('click',run);
     $('power-retry').addEventListener('click',retry);

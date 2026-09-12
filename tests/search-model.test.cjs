@@ -7,6 +7,16 @@ for (const [size, rounds] of [[4,1],[16,3],[64,6],[256,12]]) {
   for (let target=0;target<size;target++) {
     const p=M.prepare(size,target);
     assert.equal(p.rounds,rounds);
+    assert.equal(p.frames.length,1+2*rounds);
+    for(let f=1;f<p.frames.length;f++){
+      const frame=p.frames[f],prior=p.frames[f-1].vector;
+      near(frame.vector.reduce((sum,a)=>sum+a*a,0),1);
+      if(frame.kind==='phase')frame.vector.forEach((a,i)=>{
+        near(a,i===target?-prior[i]:prior[i]);
+        near(a*a,prior[i]*prior[i]);
+      });
+      else frame.vector.forEach((a,i)=>near(a,Q.diffuse(prior)[i]));
+    }
     near(p.probability,Math.sin((2*rounds+1)*Math.asin(1/Math.sqrt(size)))**2);
     near(Q.probabilities(p.vector).reduce((a,b)=>a+b),1);
     near(p.chances[0],1/size);

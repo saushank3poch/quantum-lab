@@ -68,7 +68,7 @@ Beginner result feedback shows the actual sampled readings, a short sequence exp
 
 ## Where quantum can help
 
-After the six core lessons, an interactive comparison runs a sequential classical scan and ideal Grover search against the same uniformly hidden target. Change the number of possibilities and rerun. Counts are checking-rule calls, not chip instructions or seconds. Classical scanning confirms the matching candidate; its average is (N + 1)/2. Quantum attempts use k = floor(π / (4 asin(1/√N))) oracle calls plus one final verification. Failed measurements can be retried, and their calls remain counted. The simulator displays the exact probability after every round.
+After the six core lessons, an interactive comparison runs a sequential classical scan and ideal Grover search against the same uniformly hidden target. Change the number of possibilities and rerun. Counts are checking-rule calls, not chip instructions or seconds. Classical scanning confirms the matching candidate; its average is (N + 1)/2. Quantum attempts use k = floor(π / (4 asin(1/√N))) oracle calls plus one final verification. Failed measurements can be retried, and their calls remain counted. The simulator displays the calculated probability after every round. The result now opens a step-by-step replay: equal preparation, each phase change and diffusion step, the saved sampled reading, then verification. Candidate boxes show amplitude signs separately from probability bars. Purple marks a sign change, not a measurement; negative amplitudes keep their nonzero probabilities. Replay reuses the original reading without resampling or adding checking-rule calls. Very small nonzero chances are labelled <0.01%, not rounded to zero.
 
 The ending explains molecule energy estimation as a different possible application, with a clearly labelled illustration and a bounded 2026 research example. It does not compute a molecule energy or claim practical superiority over classical chemistry methods.
 
@@ -82,6 +82,8 @@ The ending explains molecule energy estimation as a different possible applicati
 - [IBM Quantum: readout error](https://quantum.cloud.ibm.com/docs/en/tutorials/readout-error-mitigation-sampler)
 
 Run `node tests/model.test.cjs` and `node tests/learn-model.test.cjs` to verify H-H, H-Z-H, X, Bell amplitudes, all four search targets, measurement collapse, the independent readout channel, and shot totals. At a per-bit error probability of 0.1, Bell outcomes have expected probabilities 0.41, 0.09, 0.09, 0.41. At error probability 0.5 the reported two-bit distribution is uniform.
+
+Run `node tests/search-replay-browser.cjs <served-url>` with Playwright for frame probabilities, sign changes, one recorded reading, separate verification, retry totals, backward/restart navigation and mobile grids.
 
 Run `node tests/search-model.test.cjs` for all 340 possible targets across the four comparison sizes, exact probability checks, normalization, classical averages, and success/failure verification counts. `node tests/power-browser.cjs <served-url>` checks the comparison flow, forced failure/retry, a classical lucky win, all sizes, mobile layouts, molecule ending and mode switching.
 
@@ -98,6 +100,7 @@ Full-lab browser validation covers every station in every experiment, all target
 | `css/learn.css` | Beginner layout and experiment bench |
 | `js/learn.js` | Beginner lessons, predictions, understanding checks and progression |
 | `js/search-model.js` | Pure Grover comparison calculations, scan and verified attempts |
+| `js/search-replay.js` | Saved calculation frames, candidate boxes and self-paced phase/interference/read/verify replay |
 | `js/power.js` | Search comparison controls, counters, probability chart and retries |
 | `css/power.css` | Search comparison and molecule ending layouts |
 | `js/learn-model.js` | Experiments, exact measurement branches and independent trial sampling |

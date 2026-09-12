@@ -59,7 +59,25 @@
     </div>
     <p><strong>Make a prediction:</strong> which method will use fewer checks? Try it, then increase the possibilities.</p>
     <div class="power-actions"><button id="power-run" class="learn-primary">Try both methods</button><button id="power-retry" hidden>Retry quantum on the same target</button></div>
-    <section id="power-result" hidden aria-live="polite"><h2 id="power-verdict"></h2><p id="power-how"></p><p id="power-pattern"></p><div id="power-odds"></div><p><strong>Remember the purple operation?</strong> A phase change alone leaves the odds unchanged. Each search round pairs a phase change with an interference operation. Together, they increase the right answer’s chance. A final reading still gives only one candidate.</p></section>
+    <section id="power-result" hidden>
+      <h2 id="power-verdict" aria-live="polite"></h2>
+      <section id="search-replay" aria-labelledby="replay-heading">
+        <h3 id="replay-heading">Let’s replay what happened to the boxes.</h3>
+        <p class="power-small">This is the simulator’s view of the run you just tried. It lets us inspect signs and chances between operations. A real quantum reading cannot show all of this.</p>
+        <ol class="trace-sequence" aria-label="Search operations">
+          <li data-trace-kind="prepare">Prepare</li><li data-trace-kind="phase">Purple: phase</li><li data-trace-kind="interference">Interference</li><li data-trace-kind="read">Read one</li><li data-trace-kind="verify">Check it</li>
+        </ol>
+        <p class="trace-round-note">Purple + interference = one round. Repeat those two steps before reading.</p>
+        <div class="trace-workspace">
+          <div class="trace-board"><div id="trace-grid-label"></div><div id="trace-boxes" role="group" aria-label="Possible answers and their reading chances" tabindex="0"></div><p id="trace-legend" class="power-small"></p></div>
+          <div class="trace-story" aria-live="polite" aria-atomic="true"><div id="trace-position"></div><h4 id="trace-title" tabindex="-1"></h4><p id="trace-copy"></p><p id="trace-change"></p><div class="trace-facts"><strong id="trace-status"></strong><span id="trace-cost"></span></div></div>
+        </div>
+        <div class="trace-controls"><button id="trace-prev">← Previous step</button><button id="trace-next" class="learn-primary">Next: apply purple →</button><button id="trace-restart">Replay from the start ↻</button></div>
+        <details id="trace-math"><summary>Show this step’s calculation · optional</summary><p id="trace-math-copy"></p></details>
+        <details class="trace-rule"><summary>How can the rule recognise an answer we haven’t found?</summary><p>Testing a proposed answer can be easier than finding one—like testing whether a key fits a lock. In this search, the rule can recognise a match. Its quantum version changes the matching amplitude’s sign without returning the box number.</p><p>Our simulator defines a hidden target to build that rule. The purple outline is a teaching cue that lets us inspect its effect. It is not a visible label a real quantum computer can simply read.</p></details>
+      </section>
+      <details id="power-summary"><summary>Compare the totals and chances</summary><p id="power-how"></p><p id="power-pattern"></p><div id="power-odds"></div></details>
+    </section>
     <p class="power-boundary">This advantage applies to this kind of search with a suitable quantum checking rule. Building that rule, preparing the state, other gates, and correcting errors all add work. Fewer rule uses does not automatically mean a faster real chip.</p>
     <details><summary>How the comparison is calculated · optional</summary><p>Exactly one uniformly hidden target among N candidates. The classical procedure scans in order and confirms its match: average (N + 1)/2 checks, worst case N. If the last candidate were inferred without verification, that procedure could save one check on the last-target case. This is not a comparison with indexed or sorted databases.</p><p>The quantum model starts with equal amplitudes and applies Grover’s phase oracle and diffusion k times, where θ = asin(1/√N) and k = floor(π/(4θ)). It samples one outcome and spends one additional rule call verifying it. Success probability is sin²((2k + 1)θ). Retrying prepares a fresh state; cumulative calls remain counted.</p><p>The browser simulates these operations on an ordinary computer. It is teaching an algorithmic advantage, not demonstrating faster hardware. <a href="https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms/grover-algorithm/number-of-iterations" target="_blank" rel="noreferrer">IBM: iteration counts and success probabilities ↗</a></p></details>
     <div class="power-footer"><button id="power-back">← Back to the lesson</button><button id="power-next" class="learn-primary" disabled>Where could this help in real life? →</button></div>
@@ -114,6 +132,6 @@
     </ul><p class="credit">Inspired by <a href="https://laurentiugabriel.github.io/blog/articles/how-i-use-llms-to-learn/" target="_blank" rel="noreferrer">Laurentiu Raducu’s learning flow</a> and the MIT-licensed <a href="https://github.com/LaurentiuGabriel/learnscape" target="_blank" rel="noreferrer">Learnscape engine</a>. Made for <a href="https://github.com/saushank3poch" target="_blank" rel="noreferrer">saushank3poch</a>.</p>
   </dialog>
   <noscript>This lab needs JavaScript to run its quantum calculations and animation. Enable JavaScript to explore the experiments.</noscript>
-  <script src="js/iso.js"></script><script src="js/model.js"></script><script src="js/world.js"></script><script src="js/sim.js"></script><script src="js/render.js"></script><script src="js/ui.js"></script><script src="js/learn-model.js"></script><script src="js/search-model.js"></script><script src="js/power.js"></script><script src="js/learn.js"></script><script src="js/main.js"></script>
+  <script src="js/iso.js"></script><script src="js/model.js"></script><script src="js/world.js"></script><script src="js/sim.js"></script><script src="js/render.js"></script><script src="js/ui.js"></script><script src="js/learn-model.js"></script><script src="js/search-model.js"></script><script src="js/search-replay.js"></script><script src="js/power.js"></script><script src="js/learn.js"></script><script src="js/main.js"></script>
 </body>
 </html>

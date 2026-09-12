@@ -27,6 +27,42 @@ body.showing-application #learn-math,body.showing-application #learn-next{displa
 .power-bar i{display:block;height:100%;background:#dca943}
 .power-card.quantum .power-bar i{background:#218876}
 .power-actions{display:flex;flex-wrap:wrap;gap:12px}
+#search-replay{margin-top:24px;scroll-margin-top:20px}
+#replay-heading{font-size:24px;line-height:1.25;margin:0 0 8px}
+.trace-sequence{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:22px 0 8px}
+.trace-sequence li{padding:9px 12px;border:1px solid #b5cbbd;background:#f6faf4;border-radius:6px;font-size:13px}
+.trace-sequence li.active{background:#225c50;color:#fff;border-color:#225c50;font-weight:700}
+.trace-sequence [data-trace-kind=phase].active{background:#765397;border-color:#765397}
+.trace-sequence [data-trace-kind=read].active{background:#f0cc85;color:#533e19;border-color:#ba9044}
+.trace-round-note{font-size:13px;color:#506b5c;margin:8px 0 22px}
+.trace-workspace{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+.trace-story{scroll-margin-top:18px}
+.trace-board{min-width:0;padding:18px;background:#f8fbf4;border:1px solid #bbcebd;border-radius:10px}
+#trace-grid-label{font-size:13px;font-weight:650;margin-bottom:14px}
+#trace-boxes{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;overflow:auto;padding:3px;scrollbar-width:thin}
+#trace-boxes.many{grid-template-columns:repeat(8,minmax(0,1fr));gap:4px;max-height:350px}
+.trace-box{position:relative;min-width:0;border:1px solid #b6cdbb;border-radius:7px;background:#e8f0e4;padding:9px 8px 7px;color:#2a4739}
+.trace-box strong{font-size:18px;display:block}.trace-sign{position:absolute;right:8px;top:8px;font-size:16px;font-weight:700}
+.trace-box small{display:block;font-size:11px;text-align:center;font-variant-numeric:tabular-nums;margin-top:5px;white-space:nowrap}
+.trace-bar{display:block;height:7px;background:#cddcca;margin-top:12px;border-radius:3px;overflow:hidden}.trace-bar i{display:block;height:100%;background:#32846f}
+.trace-box.phase-changed{border:2px solid #8559a5;padding:8px 7px 6px;background:#f1e8fa;box-shadow:0 0 0 1px #b297cb}
+.trace-box.selected{border:2px solid #b08330;background:#fff0cb;padding:8px 7px 6px}.trace-box.selected .trace-sign{font-size:10px;top:12px}
+.trace-box.not-selected{opacity:.45}.trace-box.confirmed{border-color:#297459;background:#daf1df}.trace-box.rejected{border-color:#b25b49;background:#ffeadc}
+#trace-boxes.many .trace-box{padding:7px 3px}.many .trace-box strong{font-size:12px}.many .trace-sign{font-size:11px;right:4px;top:7px}.many .trace-box small{font-size:9px;letter-spacing:-.4px}.many .trace-box.selected .trace-sign{font-size:8px;top:8px}
+#trace-position{font-size:12px;color:#537663;font-weight:600}
+#trace-title{font-size:23px;line-height:1.25;margin:10px 0 16px}
+#trace-copy{font-size:16px;line-height:1.6;margin:0 0 16px}
+#trace-change{font-size:15px;padding:14px;border-left:3px solid #57987b;background:#f0f7eb;border-radius:0 6px 6px 0}
+[data-kind=phase] #trace-change{border-color:#9471b5;background:#f3ecf9}
+.trace-facts{display:flex;flex-direction:column;gap:7px;font-size:12px;padding-top:10px}.trace-facts strong{letter-spacing:.06em}.trace-facts span{font-size:14px}
+.trace-controls{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:20px 0}
+.trace-controls button{min-height:44px;border-radius:6px;padding:10px 14px;font-size:14px;border:1px solid #a3bfaa;background:#fafdf7;color:#254e3e}
+.trace-controls .learn-primary{background:#237b69;border-color:#237b69;color:white}
+#trace-restart{background:none;border-color:transparent;font-size:13px}
+#search-replay details{border-top:1px solid #bfd1bc;padding:14px 0}
+#power-summary{border-top:1px solid #b2c9b3;padding-top:20px;margin-top:8px}
+@media(max-width:900px){.trace-workspace{grid-template-columns:1fr}.trace-story{order:0}.trace-board{order:1}.trace-board #trace-boxes.many{max-height:320px}#trace-copy{font-size:15px}#trace-title{font-size:21px}.trace-controls .learn-primary{flex:1}.trace-controls #trace-restart{width:100%;text-align:left}}
+@media(max-width:480px){#trace-boxes.many{grid-template-columns:repeat(4,minmax(0,1fr))}.many .trace-box strong{font-size:16px}.many .trace-sign{font-size:14px}.many .trace-box small{font-size:11px;letter-spacing:0}.trace-board{padding:12px}.trace-sequence{gap:5px}.trace-sequence li{font-size:11px;padding:7px}}
 #power-result{margin-top:28px;padding:24px;border-radius:16px;background:#dfebdf}
 #power-result h2{font-size:23px;margin:0 0 12px}
 #power-result p{line-height:1.55}
