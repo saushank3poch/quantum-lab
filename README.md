@@ -64,6 +64,8 @@ The route and circuit run left to right in the strip. Bit strings are written q0
 
 Matching outputs in the Bell experiment alone do not prove entanglement: classical correlated bits can produce the same Z-basis distribution. Here the ideal circuit calculation establishes the Bell state. Entanglement does not provide controllable faster-than-light communication. Quantum computing does not reveal all candidate answers in one measurement.
 
+Beginner result feedback shows the actual sampled readings, a short sequence explaining each operation, and the lesson to carry forward. Correct-answer feedback explains the cause, and incorrect answers give a specific hint. In the main text, amplitudes and cancellation are introduced before the later measurement and phase experiments.
+
 ## Where quantum can help
 
 After the six core lessons, an interactive comparison runs a sequential classical scan and ideal Grover search against the same uniformly hidden target. Change the number of possibilities and rerun. Counts are checking-rule calls, not chip instructions or seconds. Classical scanning confirms the matching candidate; its average is (N + 1)/2. Quantum attempts use k = floor(π / (4 asin(1/√N))) oracle calls plus one final verification. Failed measurements can be retried, and their calls remain counted. The simulator displays the exact probability after every round.
