@@ -310,7 +310,7 @@
       cam.x += (p.x - cam.x) * 0.5;
       cam.y += (p.y - cam.y) * 0.5;
       cam.scale += (defaultScale() - cam.scale) * 0.5;
-      setFollow(false);
+      setFollow(target.follow === true);
     } else if (follow) {
       var lp = vanTarget();
       /* ~0.3 s time constant: reads as a camera easing along rather than a

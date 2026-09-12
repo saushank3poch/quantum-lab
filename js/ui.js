@@ -35,7 +35,7 @@
     $('next-lesson').textContent=S.state.mode==='grover'?'Replay the first experiment ↻':'Next experiment →';
   }
   function nextLesson(){var modes=['interference','bell','grover'];select(modes[(modes.indexOf(S.state.mode)+1)%3]);}
-  function select(mode){S.select(mode);fly=W.districts[0];paint(true);}
+  function select(mode){S.select(mode);fly={x:W.districts[0].x,y:W.districts[0].y,follow:true};paint(true);}
   function renderState(){
     var s=S.state,a=s.vector,n=Q.qubits(a),p=Q.probabilities(a);
     $('state-status').textContent=s.outcome===null?'BEFORE MEASUREMENT':'AFTER MEASUREMENT';
@@ -69,7 +69,7 @@
     $('status-text').textContent=s.finished?'Experiment complete':s.paused?'Paused · explore at your pace':s.dwellLeft>0?'At '+W.districts[index].name:'Following the state carrier';
     $('status-detail').textContent=s.finished?'Try the next experiment, or replay with different settings.':s.paused?'Play to continue, or advance one stop.':s.reading?'Reading stop · '+Math.ceil(s.dwellLeft/s.speed)+' seconds remaining':s.tourDone?'You have seen these stops; this replay moves faster.':'The bars on the carrier are the calculated amplitudes.';
   }
-  function resetAll(){S.replayTour();S.run();fly=W.districts[0];paint(true);}
+  function resetAll(){S.replayTour();S.run();fly={x:W.districts[0].x,y:W.districts[0].y,follow:true};paint(true);}
   function next(){if(S.state.station==='s5')nextLesson();else S.step();}
   function init(){
     document.querySelectorAll('.lesson').forEach(function(b){b.addEventListener('click',function(){select(b.dataset.mode);});});
