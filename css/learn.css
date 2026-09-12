@@ -164,7 +164,7 @@
   .topbar .header-actions { gap: 8px; }
   .topbar .text-button { font-size: 11px; }
 }
-@media (max-width: 350px) {
+@media (max-width: 380px) {
   body:not(.learning) .topbar .header-actions { min-width: 0; flex-wrap: wrap; justify-content: flex-end; row-gap: 0; }
   body:not(.learning) .topbar .text-button { padding-top: 3px; padding-bottom: 3px; }
 }
