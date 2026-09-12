@@ -104,6 +104,7 @@
     fly={x:W.districts[lesson.station].x,y:W.districts[lesson.station].y,follow:true};
   }
   function resetExperiment() {
+    document.body.classList.remove('showing-application');$('learn-application').hidden=true;
     document.body.classList.remove('has-result');
     state.prediction=null; state.result=null; state.answered=false; state.busy=false; state.elapsed=0; state.frame=0; state.complete=false;
     setWorld(); render();
@@ -142,7 +143,7 @@
     $('learn-run').textContent=l.action; $('learn-run').disabled=true;
     $('learn-predict-area').hidden=false; $('learn-discovery').hidden=true; $('learn-finish').hidden=true;
     $('learn-check-feedback').textContent=''; $('learn-next').disabled=true;
-    $('learn-next').textContent=state.index===5?'Finish the basics →':state.index===7?'Finish →':'Continue →';
+    $('learn-next').textContent=state.index===5?'See why this can be useful →':state.index===7?'Finish →':'Continue →';
     $('learn-back').disabled=state.index===0;
     $('learn-math').open=false; $('learn-math-copy').textContent=l.math;
     $('learn-note').textContent=l.note;
@@ -194,12 +195,15 @@
     if(innerWidth<=900)$('learn-output').scrollIntoView({block:'start',behavior:'instant'});
   }
   function finishBasics() {
+    document.body.classList.add('showing-application');$('learn-application').hidden=false;
     document.body.classList.remove('has-result');
     state.complete=true;
+    $('learn-group').textContent='A practical application';$('learn-progress').textContent='Basics complete';
+    $('learn-bench').scrollTop=0;
     $('learn-finish').hidden=false; $('learn-predict-area').hidden=true; $('learn-discovery').hidden=true;
-    $('learn-title').textContent=state.index===7?'You’ve explored the core idea.':'You’ve reached the core idea.';
-    $('learn-intro').textContent='A qubit still gives one answer when read. What makes it different is how its state can change before that reading.';
-    $('learn-finish-copy').textContent='One blue operation gives 50/50 readings. Two undo each other. A measurement in the middle breaks that return. A phase change can switch the final answer.';
+    $('learn-title').textContent='What could this help us do?';
+    $('learn-intro').textContent='The search showed how a different algorithm can need fewer checks as a problem grows. Another promising use is understanding nature itself.';
+    $('learn-finish-copy').textContent='You saw phase changes and interference change which answer comes out. Quantum algorithms arrange these operations to extract useful information.';
     $('learn-extra').hidden=state.index===7;
     $('learn-math').open=false; $('learn-guide-scroll').scrollTop=0; $('learn-title').focus();
     $('learn-next').disabled=true;
@@ -207,7 +211,8 @@
   function next() {
     if(!state.answered || state.busy || state.complete) return;
     state.unlocked=Math.max(state.unlocked,Math.min(7,state.index+1));
-    if(state.index===5 || state.index===7){finishBasics();return;}
+    if(state.index===5){root.Power.open(finishBasics);return;}
+    if(state.index===7){finishBasics();return;}
     load(state.index+1,true);
   }
   function enter() {
@@ -216,12 +221,16 @@
     resetExperiment(); root.dispatchEvent(new Event('resize'));
   }
   function exit() {
+    document.body.classList.remove('showing-application');
+    root.Power.close();
     document.body.classList.remove('has-result');
     state.busy=false; api.active=false; document.body.classList.remove('learning');
     $('learning-mode').textContent='Start simply'; $('guide-toggle').hidden=false;
     W.build('interference'); S.select('interference'); if(matchMedia('(prefers-reduced-motion: reduce)').matches)S.pause(); root.UI.paint(true); root.dispatchEvent(new Event('resize'));
   }
   function init() {
+    root.Power.init();
+    $('learn-power-again').addEventListener('click',function(){root.Power.open(finishBasics);});
     $('learn-run').addEventListener('click',run);
     $('learn-next').addEventListener('click',next);
     $('learn-back').addEventListener('click',function(){load(state.index-1,true);});
@@ -232,6 +241,9 @@
     $('learning-mode').addEventListener('click',function(){if(api.active)exit();else enter();});
     document.querySelectorAll('[data-target]').forEach(function(b){b.addEventListener('click',function(){state.target=Number(b.dataset.target);resetExperiment();});});
     enter();
+    if(root.location.hash==='#advantage') {
+      state.index=5;state.unlocked=5;resetExperiment();root.Power.open(finishBasics);
+    }
   }
   function update(dt) {
     if(!api.active || !state.busy || $('about').open) return;

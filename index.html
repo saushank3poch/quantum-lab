@@ -8,6 +8,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23112a39'/%3E%3Cellipse cx='32' cy='32' rx='24' ry='10' transform='rotate(-45 32 32)' fill='none' stroke='%2361d4bb' stroke-width='4'/%3E%3Cellipse cx='32' cy='32' rx='24' ry='10' transform='rotate(45 32 32)' fill='none' stroke='%2361d4bb' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23f7be50'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/learn.css">
+  <link rel="stylesheet" href="css/power.css">
 </head>
 <body class="learning">
   <canvas id="stage" aria-label="Interactive isometric quantum lab. All stations and calculations are also available in the guide panel."></canvas>
@@ -24,18 +25,45 @@
       <div id="learn-target-wrap" hidden><span>Mark an answer:</span><div><button data-target="0" aria-pressed="false">00</button><button data-target="1" aria-pressed="false">01</button><button data-target="2" aria-pressed="false">10</button><button data-target="3" aria-pressed="true">11</button></div></div>
       <div id="learn-output" aria-live="polite"></div>
       <p id="learn-sample-note"></p>
+          <div id="learn-application" class="molecule-story" hidden><h3>Could we predict a molecule’s behaviour before making a material?</h3>
+            <div class="molecule-art" aria-hidden="true"><i></i><span></span><i></i><span></span><i></i></div>
+            <ol><li><strong>Ask a useful question.</strong> How strongly will these atoms bind? That can help researchers decide which materials to test.</li><li><strong>Model their electrons.</strong> Electrons follow quantum rules. Some interacting systems are expensive to calculate accurately. Ordinary computers use approximations that already work well for many problems.</li><li><strong>Use a quantum processor for difficult parts.</strong> Prepare a quantum model, change it, and measure repeatedly to estimate an energy. An ordinary computer helps organise and interpret the work.</li></ol>
+            <p>The hope: better predictions for chemistry and materials. This uses quantum simulation, a different algorithm from the search you just tried.</p>
+            <p class="power-small">Illustration, not a molecule calculation. In <a href="https://www.ibm.com/quantum/blog/cleveland-clinic-riken-chemistry" target="_blank" rel="noreferrer">IBM’s May 2026 protein study</a>, quantum processors and supercomputers worked together; the method did not beat the best classical approaches.</p>
+          </div>
     </section>
     <aside id="learn-guide" aria-label="One idea at a time">
       <div class="learn-guide-top"><div class="learn-progress-row"><span id="learn-progress"></span><nav id="learn-navigation" aria-label="Learning steps"></nav></div><div id="learn-group"></div><h1 id="learn-title" tabindex="-1"></h1><p id="learn-intro"></p></div>
       <div id="learn-guide-scroll">
         <section id="learn-predict-area"><h2 id="learn-question"></h2><div id="learn-predictions"></div><button id="learn-run" class="learn-primary" disabled>Try it</button><p class="learn-gentle">Make a guess. Being unsure is a fine place to start.</p></section>
         <section id="learn-discovery" hidden><p id="learn-your-guess"></p><h2 id="learn-observed" tabindex="-1"></h2><p id="learn-explanation"></p><button id="learn-repeat" class="learn-repeat">Try this again ↻</button><div class="learn-check"><span>PUT IT IN WORDS</span><h3 id="learn-check-question"></h3><div id="learn-reasons"></div><p id="learn-check-feedback" aria-live="polite"></p></div></section>
-        <section id="learn-finish" hidden><div class="finish-mark" aria-hidden="true">✓</div><h2>Say it simply.</h2><p id="learn-finish-copy"></p><p>Try explaining that to someone without using an equation. You can revisit any step above.</p><button id="learn-extra" class="learn-primary">Explore two connected qubits →</button><button id="learn-full-lab" class="learn-secondary">Open the full lab</button><button id="learn-again" class="learn-repeat">Start again ↻</button></section>
+        <section id="learn-finish" hidden><div class="finish-mark" aria-hidden="true">✓</div><h2>Why researchers care.</h2><p id="learn-finish-copy"></p>
+
+          <p><strong>Quantum computers could be powerful tools for particular problems. Ordinary chips remain essential.</strong></p>
+          <button id="learn-power-again" class="learn-secondary">Try the search comparison again</button><button id="learn-extra" class="learn-primary">Explore two connected qubits →</button><button id="learn-full-lab" class="learn-secondary">Open the full lab</button><button id="learn-again" class="learn-repeat">Start again ↻</button></section>
         <details id="learn-math"><summary>Show the maths <span>Optional</span></summary><p id="learn-math-copy"></p><p id="learn-note"></p></details>
       </div>
       <div class="learn-footer"><button id="learn-back">← Back</button><button id="learn-next" class="learn-primary" disabled>Continue →</button></div>
     </aside>
   </main>
+  <section id="power-view" hidden aria-labelledby="power-title">
+    <div class="power-kicker">NOW PUT INTERFERENCE TO WORK</div>
+    <h1 id="power-title" tabindex="-1">So where does the advantage come from?</h1>
+    <p class="power-intro">Imagine many possible answers and a rule that can recognise the right one. There are no clues about where to look. An ordinary search checks answers in turn. A quantum search uses the rule with interference to make the right answer more likely to come out.</p>
+    <div class="power-controls" role="group" aria-label="Number of possible answers"><span>How many possibilities?</span><button data-search-size="4" aria-pressed="false">4</button><button data-search-size="16" aria-pressed="true">16</button><button data-search-size="64" aria-pressed="false">64</button><button data-search-size="256" aria-pressed="false">256</button></div>
+    <div id="power-grid" aria-hidden="true"></div><p id="power-grid-note" class="power-small"></p>
+    <p><strong>We count uses of the checking rule, not seconds.</strong> Both methods get the same hidden target.</p>
+    <div class="power-cards">
+      <section class="power-card"><h2>Ordinary search · check in turn</h2><div class="power-counter"><strong id="power-classical-count">?</strong><span>rule uses</span></div><p id="power-classical-result"></p><div class="power-bar" aria-hidden="true"><i id="power-classical-bar"></i></div></section>
+      <section class="power-card quantum"><h2>Quantum search · shape the odds</h2><div class="power-counter"><strong id="power-quantum-count">?</strong><span>rule uses · including retries</span></div><p id="power-quantum-result"></p><div class="power-bar" aria-hidden="true"><i id="power-quantum-bar"></i></div></section>
+    </div>
+    <p><strong>Make a prediction:</strong> which method will use fewer checks? Try it, then increase the possibilities.</p>
+    <div class="power-actions"><button id="power-run" class="learn-primary">Try both methods</button><button id="power-retry" hidden>Retry quantum on the same target</button></div>
+    <section id="power-result" hidden aria-live="polite"><h2 id="power-verdict"></h2><p id="power-pattern"></p><div id="power-odds"></div><p><strong>Remember the purple operation?</strong> A phase change alone leaves the odds unchanged. Each search round pairs a phase change with an interference operation. Together, they increase the right answer’s chance. A final reading still gives only one candidate.</p></section>
+    <p class="power-boundary">This advantage applies to this kind of search with a suitable quantum checking rule. Building that rule, preparing the state, other gates, and correcting errors all add work. Fewer rule uses does not automatically mean a faster real chip.</p>
+    <details><summary>How the comparison is calculated · optional</summary><p>Exactly one uniformly hidden target among N candidates. The classical procedure scans in order and confirms its match: average (N + 1)/2 checks, worst case N. If the last candidate were inferred without verification, that procedure could save one check on the last-target case. This is not a comparison with indexed or sorted databases.</p><p>The quantum model starts with equal amplitudes and applies Grover’s phase oracle and diffusion k times, where θ = asin(1/√N) and k = floor(π/(4θ)). It samples one outcome and spends one additional rule call verifying it. Success probability is sin²((2k + 1)θ). Retrying prepares a fresh state; cumulative calls remain counted.</p><p>The browser simulates these operations on an ordinary computer. It is teaching an algorithmic advantage, not demonstrating faster hardware. <a href="https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms/grover-algorithm/number-of-iterations" target="_blank" rel="noreferrer">IBM: iteration counts and success probabilities ↗</a></p></details>
+    <div class="power-footer"><button id="power-back">← Back to the lesson</button><button id="power-next" class="learn-primary" disabled>Where could this help in real life? →</button></div>
+  </section>
   <nav id="hud" aria-label="Experiments">
     <div class="experiment-tabs">
       <button class="lesson active" data-mode="interference" aria-pressed="true"><span>01</span> Interference</button>
@@ -73,8 +101,8 @@
     <button id="about-close" class="modal-close" aria-label="Close science notes">×</button><div class="eyebrow">BEHIND THE LAB</div><h2 id="about-title">Real mathematics.<br>A place to understand it.</h2>
     <p>Start with an ordinary bit, then predict and test one quantum idea at a time. The beginner path waits for your actions; nothing advances on a reading timer. Equations are optional. The Full lab keeps the original three animated circuit tours and their detailed controls.</p>
     <h3>How much of it is real</h3>
-    <p><strong>Computed:</strong> real-valued statevectors, X, H and Z gates, CNOT, a four-candidate phase oracle and diffusion, squared-amplitude probabilities, measurement collapse, and independently sampled shots. The carrier’s bars come directly from the current state. Our displayed bit order is q0 q1.</p>
-    <p><strong>Scaled down:</strong> one or two qubits; four candidates and one target in the search. Each sample represents a fresh circuit run. Beginner experiments use one or 40 fresh runs. The full lab uses 1,024. Repeated runs are computed together instead of animating every trip.</p>
+    <p><strong>Computed:</strong> real-valued statevectors, X, H and Z gates, CNOT, a phase oracle and diffusion, squared-amplitude probabilities, measurement collapse, and independently sampled shots. The carrier’s bars come directly from the current state. Our displayed bit order is q0 q1.</p>
+    <p><strong>Scaled down:</strong> circuit lessons use one or two qubits; the search comparison simulates 2–8 qubits, 4–256 candidates and one target. It counts checking-rule calls, including final verification and retries, against a classical sequential scan. Each sample represents a fresh circuit run. Beginner experiments use one or 40 fresh runs. The full lab uses 1,024. Repeated runs are computed together instead of animating every trip. The molecule example is explanatory, not a chemistry simulation.</p>
     <p><strong>Assumed:</strong> ideal initialization and gates; Z-basis measurement. Optional readout noise flips each output bit independently with the chosen probability. It does not model gate errors or decoherence. Sampling uses browser pseudorandom numbers.</p>
     <p><strong>Visual metaphor:</strong> buildings, moving carriers, travel time, and the layout are invented. Qubits do not travel through a town. Amplitude bars are simulator information that a single hardware measurement cannot reveal. Only real-amplitude gates are included. Oracle construction and hardware runtime costs are omitted.</p>
     <h3>Keep these distinctions</h3><p>Negative amplitudes are not negative probabilities. Matching Bell outputs alone do not prove entanglement, and entanglement cannot send a controllable message faster than light. Quantum computers do not let us read every answer at once.</p>
@@ -86,6 +114,6 @@
     </ul><p class="credit">Inspired by <a href="https://laurentiugabriel.github.io/blog/articles/how-i-use-llms-to-learn/" target="_blank" rel="noreferrer">Laurentiu Raducu’s learning flow</a> and the MIT-licensed <a href="https://github.com/LaurentiuGabriel/learnscape" target="_blank" rel="noreferrer">Learnscape engine</a>. Made for <a href="https://github.com/saushank3poch" target="_blank" rel="noreferrer">saushank3poch</a>.</p>
   </dialog>
   <noscript>This lab needs JavaScript to run its quantum calculations and animation. Enable JavaScript to explore the experiments.</noscript>
-  <script src="js/iso.js"></script><script src="js/model.js"></script><script src="js/world.js"></script><script src="js/sim.js"></script><script src="js/render.js"></script><script src="js/ui.js"></script><script src="js/learn-model.js"></script><script src="js/learn.js"></script><script src="js/main.js"></script>
+  <script src="js/iso.js"></script><script src="js/model.js"></script><script src="js/world.js"></script><script src="js/sim.js"></script><script src="js/render.js"></script><script src="js/ui.js"></script><script src="js/learn-model.js"></script><script src="js/search-model.js"></script><script src="js/power.js"></script><script src="js/learn.js"></script><script src="js/main.js"></script>
 </body>
 </html>

@@ -39,6 +39,10 @@ const url = process.argv[2] || 'http://localhost:8765/';
     }
     await page.locator('#learn-next').click();
     if (i === 5) {
+      assert.ok(await page.locator('#power-view').isVisible());
+      assert.ok(await page.locator('#power-next').isDisabled());
+      await page.locator('#power-run').click();
+      await page.locator('#power-next').click();
       assert.ok(await page.locator('#learn-finish').isVisible());
       assert.equal(await page.evaluate(() => Beginner.state.index), 5);
       await page.locator('#learn-extra').click();

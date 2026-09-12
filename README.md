@@ -56,7 +56,7 @@ The route and circuit run left to right in the strip. Bit strings are written q0
 
 **Computed:** `js/model.js` performs real-valued statevector operations for H, X, Z, CNOT, a phase oracle, and diffusion. It computes squared-amplitude probabilities, samples measurement outcomes, collapses the state, and draws 1,024 independent samples from fresh identical preparations. `js/sim.js` applies the operations at the appropriate stops. Both `js/render.js` and `js/ui.js` read that same state. The beginner path in `js/learn.js` uses the same gates through `js/learn-model.js`, including X for its first two exercises and explicit measurement branches for its middle-reading exercise.
 
-**Scaled down:** one or two qubits, four search candidates, one marked target. Beginner exercises sample one or 40 fresh preparations; the full lab samples 1,024. Repeated preparations are sampled together instead of animating every repetition. This is a small teaching model, not a performance benchmark.
+**Scaled down:** circuit lessons use one or two qubits. The practical search comparison simulates 2–8 qubits with 4, 16, 64 or 256 candidates and one marked target. Beginner exercises sample one or 40 fresh preparations; the full lab samples 1,024. Repeated preparations are sampled together instead of animating every repetition. This is a small teaching model, not a performance benchmark.
 
 **Assumed:** initialization and gates are ideal. Measurement is in the Z basis. Optional readout error independently flips each reported bit with probability p. It does not model decoherence, imperfect gates, leakage, or correlated noise. Sampling uses browser pseudorandom numbers. Only real-amplitude gates are included; this is not a general complex-gate simulator.
 
@@ -64,14 +64,24 @@ The route and circuit run left to right in the strip. Bit strings are written q0
 
 Matching outputs in the Bell experiment alone do not prove entanglement: classical correlated bits can produce the same Z-basis distribution. Here the ideal circuit calculation establishes the Bell state. Entanglement does not provide controllable faster-than-light communication. Quantum computing does not reveal all candidate answers in one measurement.
 
+## Where quantum can help
+
+After the six core lessons, an interactive comparison runs a sequential classical scan and ideal Grover search against the same uniformly hidden target. Change the number of possibilities and rerun. Counts are checking-rule calls, not chip instructions or seconds. Classical scanning confirms the matching candidate; its average is (N + 1)/2. Quantum attempts use k = floor(π / (4 asin(1/√N))) oracle calls plus one final verification. Failed measurements can be retried, and their calls remain counted. The simulator displays the exact probability after every round.
+
+The ending explains molecule energy estimation as a different possible application, with a clearly labelled illustration and a bounded 2026 research example. It does not compute a molecule energy or claim practical superiority over classical chemistry methods.
+
 ## Foundations and accuracy checks
 
 - [Microsoft: qubits, gates, and measurement](https://learn.microsoft.com/en-us/azure/quantum/concepts-the-qubit)
 - [IBM Quantum: circuits and Bell states](https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/quantum-circuits/circuits)
+- [IBM: Grover iteration counts and success probabilities](https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms/grover-algorithm/number-of-iterations)
+- [IBM: May 2026 hybrid protein calculation and its limitations](https://www.ibm.com/quantum/blog/cleveland-clinic-riken-chemistry)
 - [Microsoft: Grover theory](https://learn.microsoft.com/en-us/azure/quantum/concepts-grovers)
 - [IBM Quantum: readout error](https://quantum.cloud.ibm.com/docs/en/tutorials/readout-error-mitigation-sampler)
 
 Run `node tests/model.test.cjs` and `node tests/learn-model.test.cjs` to verify H-H, H-Z-H, X, Bell amplitudes, all four search targets, measurement collapse, the independent readout channel, and shot totals. At a per-bit error probability of 0.1, Bell outcomes have expected probabilities 0.41, 0.09, 0.09, 0.41. At error probability 0.5 the reported two-bit distribution is uniform.
+
+Run `node tests/search-model.test.cjs` for all 340 possible targets across the four comparison sizes, exact probability checks, normalization, classical averages, and success/failure verification counts. `node tests/power-browser.cjs <served-url>` checks the comparison flow, forced failure/retry, a classical lucky win, all sizes, mobile layouts, molecule ending and mode switching.
 
 Run `node tests/learn-browser.cjs <served-url>` with Playwright available for the beginner browser checks. They cover all eight lessons, unsure predictions, wrong-answer recovery, progression, revisits, mode switching, search target changes, responsive layouts and reduced motion.
 
@@ -85,6 +95,9 @@ Full-lab browser validation covers every station in every experiment, all target
 | `css/styles.css` | Full lab interface and shared typography |
 | `css/learn.css` | Beginner layout and experiment bench |
 | `js/learn.js` | Beginner lessons, predictions, understanding checks and progression |
+| `js/search-model.js` | Pure Grover comparison calculations, scan and verified attempts |
+| `js/power.js` | Search comparison controls, counters, probability chart and retries |
+| `css/power.css` | Search comparison and molecule ending layouts |
 | `js/learn-model.js` | Experiments, exact measurement branches and independent trial sampling |
 | `js/iso.js` | Learnscape projection, routes, drawing primitives |
 | `js/model.js` | Pure, independently testable quantum calculations |
