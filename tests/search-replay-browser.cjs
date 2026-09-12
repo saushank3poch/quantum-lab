@@ -68,7 +68,7 @@ const url=process.argv[2]||'http://localhost:8765/';
     await page.locator('#trace-next').click();
     assert.ok(await page.locator('#trace-cost').isVisible());
   }
-  await page.locator('#learning-mode').click();await page.locator('#learning-mode').click();
+  await page.locator('#learning-mode').click();await page.locator('#start-simple').click();
   assert.ok(await page.locator('#power-view').isHidden());
   assert.deepEqual(errors,[]);
   await browser.close();console.log('PASS all sizes: phase preserves odds, signed interference, saved reading, separate verification, miss/retry, navigation and mobile grids.');

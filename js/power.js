@@ -54,10 +54,12 @@
     onDone=done;reset();
     $('power-view').querySelectorAll('details').forEach(function(el){el.open=false;});
     document.body.classList.add('showing-power');$('power-view').hidden=false;
+    root.Beginner.markSection('walkthrough-open');
     $('power-view').scrollTop=0;$('power-title').focus();
   }
   function close() {
     $('power-view').hidden=true;document.body.classList.remove('showing-power');
+    root.Beginner.markSection(root.Beginner.active?'start-simple':'learning-mode');
     if(returnFocus && returnFocus.isConnected)returnFocus.focus({preventScroll:true});
   }
   function init() {

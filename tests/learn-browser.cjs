@@ -67,7 +67,7 @@ const url = process.argv[2] || 'http://localhost:8765/';
   await page.locator('.lesson[data-mode="bell"]').click();
   await page.locator('#station-nav [data-stop="5"]').click();
   assert.equal(await page.evaluate(() => Sim.state.counts.reduce((a,b) => a+b)), 1024);
-  await page.locator('#learning-mode').click();
+  await page.locator('#start-simple').click();
   assert.ok(await page.evaluate(() => Beginner.active && Sim.state.paused));
   await page.locator('#about-open').click();
   await page.keyboard.press('Escape');

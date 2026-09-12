@@ -165,6 +165,13 @@
   .topbar .text-button { font-size: 11px; }
 }
 @media (max-width: 380px) {
-  body:not(.learning) .topbar .header-actions { min-width: 0; flex-wrap: wrap; justify-content: flex-end; row-gap: 0; }
-  body:not(.learning) .topbar .text-button { padding-top: 3px; padding-bottom: 3px; }
+   .topbar .header-actions { min-width: 0; flex-wrap: wrap; justify-content: flex-end; row-gap: 0; }
+   .topbar .text-button { padding-top: 3px; padding-bottom: 3px; }
+}
+
+.header-actions [aria-current="page"] { color: #8fe0cd; text-decoration: underline; text-underline-offset: 5px; }
+.dock-meta #guide-toggle { border: 0; background: transparent; color: inherit; font: inherit; padding: 0; white-space: nowrap; }
+@media (max-width: 600px) {
+  .dock-meta { flex-wrap: wrap; gap: 8px; }
+  .dock-meta > div { flex-wrap: wrap; }
 }

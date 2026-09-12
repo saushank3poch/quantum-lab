@@ -54,7 +54,7 @@ const url=process.argv[2]||'http://localhost:8765/';
   await page.locator('#learning-mode').click();
   assert.ok(await page.locator('#power-view').isHidden());
   assert.ok(await page.locator('#learn-application').isHidden());
-  await page.locator('#learning-mode').click();
+  await page.locator('#start-simple').click();
   assert.ok(await page.locator('#power-view').isHidden());
   assert.ok(await page.locator('#learn-run').isVisible());
   await page.goto(url.split('#')[0]+'#advantage');

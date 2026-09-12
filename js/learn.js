@@ -245,7 +245,7 @@
   }
   function enter() {
     api.active=true; document.body.classList.add('learning'); S.pause();
-    $('learning-mode').textContent='Full lab'; $('guide-toggle').hidden=true;
+    markSection('start-simple');$('guide-toggle').hidden=true;
     resetExperiment(); root.dispatchEvent(new Event('resize'));
   }
   function exit() {
@@ -253,11 +253,12 @@
     root.Power.close();
     document.body.classList.remove('has-result');
     state.busy=false; api.active=false; document.body.classList.remove('learning');
-    $('learning-mode').textContent='Start simply'; $('guide-toggle').hidden=false;
+    markSection('learning-mode');$('guide-toggle').hidden=false;
     W.build('interference'); S.select('interference'); if(matchMedia('(prefers-reduced-motion: reduce)').matches)S.pause(); root.UI.paint(true); root.dispatchEvent(new Event('resize'));
   }
   function init() {
     root.Power.init();
+    $('start-simple').addEventListener('click',function(){root.Power.close();state.index=0;enter();$('learn-title').focus();});
     $('walkthrough-open').addEventListener('click',openWalkthrough);
     $('learn-power-again').addEventListener('click',function(){root.Power.open(finishBasics);});
     $('learn-run').addEventListener('click',run);
@@ -267,7 +268,7 @@
     $('learn-extra').addEventListener('click',function(){state.unlocked=Math.max(state.unlocked,6);load(6,true);});
     $('learn-full-lab').addEventListener('click',exit);
     $('learn-again').addEventListener('click',function(){load(0,true);});
-    $('learning-mode').addEventListener('click',function(){if(api.active)exit();else enter();});
+    $('learning-mode').addEventListener('click',function(){if(api.active)exit();});
     document.querySelectorAll('[data-target]').forEach(function(b){b.addEventListener('click',function(){state.target=Number(b.dataset.target);resetExperiment();});});
     enter();
     if(root.location.hash==='#advantage')openWalkthrough();
@@ -278,6 +279,11 @@
     state.index=5;state.unlocked=Math.max(state.unlocked,5);
     resetExperiment();root.Power.open(finishBasics);
   }
+  function markSection(id) {
+    ['start-simple','walkthrough-open','learning-mode'].forEach(function(name){
+      if(name===id)$(name).setAttribute('aria-current','page');else $(name).removeAttribute('aria-current');
+    });
+  }
   function update(dt) {
     if(!api.active || !state.busy || $('about').open) return;
     state.elapsed+=dt;
@@ -286,7 +292,7 @@
     document.querySelectorAll('[data-frame]').forEach(function(b){b.classList.toggle('executing',Number(b.dataset.frame)===index);});
     if(state.elapsed>=frames.length*.45) finishRun();
   }
-  var api={active:true,init:init,update:update,state:state,lessons:lessons,enter:enter,exit:exit,
+  var api={active:true,init:init,update:update,state:state,lessons:lessons,enter:enter,exit:exit,markSection:markSection,
     takeFlyTo:function(){var target=fly;fly=null;return target;}};
   root.Beginner=api;
 })(window);
