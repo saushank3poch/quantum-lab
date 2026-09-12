@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Quantum Field Lab — an explorable quantum computer</title>
+  <meta name="description" content="Learn quantum computing by following a live quantum state through an isometric lab. Explore interference, entanglement, and Grover’s search with real calculations.">
+  <meta name="theme-color" content="#112a39">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23112a39'/%3E%3Cellipse cx='32' cy='32' rx='24' ry='10' transform='rotate(-45 32 32)' fill='none' stroke='%2361d4bb' stroke-width='4'/%3E%3Cellipse cx='32' cy='32' rx='24' ry='10' transform='rotate(45 32 32)' fill='none' stroke='%2361d4bb' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23f7be50'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <canvas id="stage" aria-label="Interactive isometric quantum lab. All stations and calculations are also available in the guide panel."></canvas>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Quantum Field Lab home"><span class="brand-icon">q<span>·</span></span><span>QUANTUM<br><b>FIELD LAB</b></span></a>
+    <div class="edition"><span>AN EXPLORABLE COMPUTER</span><small>One state. Three experiments.</small></div>
+    <div class="header-actions"><button id="about-open" class="text-button">The science <span>↗</span></button><button id="guide-toggle" class="text-button" aria-expanded="true" aria-controls="inspector">Hide guide</button></div>
+  </header>
+  <nav id="hud" aria-label="Experiments">
+    <div class="experiment-tabs">
+      <button class="lesson active" data-mode="interference" aria-pressed="true"><span>01</span> Interference</button>
+      <button class="lesson" data-mode="bell" aria-pressed="false"><span>02</span> Entanglement</button>
+      <button class="lesson" data-mode="grover" aria-pressed="false"><span>03</span> Quantum search</button>
+    </div>
+    <p class="map-caption">FOLLOW THE YELLOW STATE CARRIER <span>—</span> <span id="lab-size">1 QUBIT / 2 AMPLITUDES</span></p>
+  </nav>
+  <div class="map-tools" aria-label="Map controls"><button id="zoom-in" aria-label="Zoom in" title="Zoom in">+</button><button id="zoom-out" aria-label="Zoom out" title="Zoom out">−</button><button id="zoom-fit" aria-label="See the whole lab" title="See the whole lab">⤢</button></div>
+  <div id="tooltip" role="tooltip" hidden></div>
+  <aside id="inspector" aria-label="Experiment guide">
+    <div class="panel-heading"><span>FIELD NOTES</span><span id="step-count">STOP 01 / 06</span></div>
+    <nav id="station-nav" aria-label="Jump to a station"></nav>
+    <div class="reading-progress" role="progressbar" aria-label="Reading time remaining" aria-valuemin="0" aria-valuemax="100"><span id="reading-fill"></span></div>
+    <div class="guide-scroll">
+      <div id="narration" aria-live="polite"><div class="eyebrow" id="station-tag"></div><h1 id="station-title"></h1><p class="standfirst" id="station-short"></p></div>
+      <section class="experiment-control" aria-label="Change the experiment">
+        <div id="phase-control"><label class="toggle-label"><span><strong>Phase flip</strong><small>Apply Z between the two H gates</small></span><input type="checkbox" id="phase" checked><span class="switch" aria-hidden="true"></span></label><p class="control-note">Change it to recompute this stop and pause.</p></div>
+        <div id="target-control" hidden><label for="target">Marked answer</label><select id="target"><option value="0">00</option><option value="1">01</option><option value="2">10</option><option value="3" selected>11</option></select><p class="control-note">The selector defines which candidate the oracle recognizes.</p></div>
+        <p id="bell-note" hidden>Bit order: <b>q0 q1</b>. The first qubit is the leftmost bit.</p>
+      </section>
+      <section class="state-panel" aria-label="Calculated quantum state"><div class="section-label"><h2 id="state-heading">LIVE AMPLITUDES</h2><span id="state-status">BEFORE MEASUREMENT</span></div><div id="amplitudes"></div><div class="state-legend"><span class="positive-key">Positive</span><span class="negative-key">Negative</span><span>Probability = amplitude²</span></div><p id="state-summary"></p></section>
+      <section id="shot-panel" hidden><div class="section-label"><h2>REPEATED PREPARATIONS</h2><span>1,024 SHOTS</span></div><div id="histogram"></div><p class="control-note">Bars: sampled counts. Labels: expected probabilities with the selected readout error.</p><label class="range-label" for="error">Readout bit-flip probability <output id="error-value">0%</output></label><input id="error" type="range" min="0" max="50" step="1" value="0"><p class="control-note">Per bit, independent. Other hardware noise is omitted.</p><button id="resample" class="secondary-button">Sample 1,024 fresh shots ↻</button></section>
+      <p class="body-copy" id="station-body"></p>
+      <section id="challenge" hidden><div class="eyebrow">CHECK YOUR INTUITION</div><p id="question"></p><div id="answers"></div><p id="feedback" aria-live="polite"></p><button id="next-lesson" class="primary-button">Next experiment →</button></section>
+    </div>
+    <div class="panel-footer"><span id="lesson-footnote">EXPERIMENT 01</span><button id="next" aria-label="Go to the next station">Next stop <span>→</span></button></div>
+  </aside>
+  <section id="dock" aria-label="Tour controls">
+    <div class="circuit-strip"><span class="circuit-title">THE CIRCUIT</span><div id="circuit"></div><span class="circuit-basis">Z-basis readout</span></div>
+    <div class="transport"><button id="play" class="play-button" aria-label="Pause tour">Ⅱ</button><button id="step" class="icon-button" aria-label="Advance one stop, then pause" title="Next stop (S)">⇥</button><button id="restart" class="icon-button" aria-label="Replay the guided tour" title="Replay tour (R)">↺</button><div class="transport-status"><strong id="status-text">Travelling to preparation</strong><span id="status-detail">Pause any time. Each first stop waits for you to read.</span></div><label class="speed-label" for="speed">Speed <select id="speed"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="2">2×</option><option value="4">4×</option><option value="8">8×</option></select></label></div>
+    <div class="dock-meta"><span>Drag to pan · Scroll to zoom · Space to pause</span><div><label><input id="follow" type="checkbox" checked> Follow</label><label><input id="labels" type="checkbox" checked> Labels</label></div></div>
+  </section>
+  <dialog id="about" aria-labelledby="about-title">
+    <button id="about-close" class="modal-close" aria-label="Close science notes">×</button><div class="eyebrow">BEHIND THE LAB</div><h2 id="about-title">Real mathematics.<br>A place to understand it.</h2>
+    <p>Follow a quantum state through three small circuits. Stop at any building, inspect the amplitudes, and change the experiment. The full guided journey takes about 8 minutes at 1×; each first visit waits roughly 25–30 seconds for reading.</p>
+    <h3>How much of it is real</h3>
+    <p><strong>Computed:</strong> real-valued statevectors, H and Z gates, CNOT, a four-candidate phase oracle and diffusion, squared-amplitude probabilities, measurement collapse, and independently sampled shots. The carrier’s bars come directly from the current state. Our displayed bit order is q0 q1.</p>
+    <p><strong>Scaled down:</strong> one or two qubits; four candidates and one target in the search. Each sample represents a fresh circuit run. The 1,024 runs are computed together instead of animating every trip.</p>
+    <p><strong>Assumed:</strong> ideal initialization and gates; Z-basis measurement. Optional readout noise flips each output bit independently with the chosen probability. It does not model gate errors or decoherence. Sampling uses browser pseudorandom numbers.</p>
+    <p><strong>Visual metaphor:</strong> buildings, moving carriers, travel time, and the layout are invented. Qubits do not travel through a town. Amplitude bars are simulator information that a single hardware measurement cannot reveal. Only real-amplitude gates are included. Oracle construction and hardware runtime costs are omitted.</p>
+    <h3>Keep these distinctions</h3><p>Negative amplitudes are not negative probabilities. Matching Bell outputs alone do not prove entanglement, and entanglement cannot send a controllable message faster than light. Quantum computers do not let us read every answer at once.</p>
+    <h3>Read the foundations</h3><ul class="sources">
+      <li><a href="https://learn.microsoft.com/en-us/azure/quantum/concepts-the-qubit" target="_blank" rel="noreferrer">Microsoft · Qubits, gates, and measurement ↗</a></li>
+      <li><a href="https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/quantum-circuits/circuits" target="_blank" rel="noreferrer">IBM Quantum · Circuits and Bell states ↗</a></li>
+      <li><a href="https://learn.microsoft.com/en-us/azure/quantum/concepts-grovers" target="_blank" rel="noreferrer">Microsoft · Grover’s algorithm ↗</a></li>
+      <li><a href="https://quantum.cloud.ibm.com/docs/en/tutorials/readout-error-mitigation-sampler" target="_blank" rel="noreferrer">IBM Quantum · Readout errors ↗</a></li>
+    </ul><p class="credit">Inspired by <a href="https://laurentiugabriel.github.io/blog/articles/how-i-use-llms-to-learn/" target="_blank" rel="noreferrer">Laurentiu Raducu’s learning flow</a> and the MIT-licensed <a href="https://github.com/LaurentiuGabriel/learnscape" target="_blank" rel="noreferrer">Learnscape engine</a>. Made for <a href="https://github.com/saushank3poch" target="_blank" rel="noreferrer">saushank3poch</a>.</p>
+  </dialog>
+  <noscript>This lab needs JavaScript to run its quantum calculations and animation. Enable JavaScript to explore the experiments.</noscript>
+  <script src="js/iso.js"></script><script src="js/model.js"></script><script src="js/world.js"></script><script src="js/sim.js"></script><script src="js/render.js"></script><script src="js/ui.js"></script><script src="js/main.js"></script>
+</body>
+</html>
