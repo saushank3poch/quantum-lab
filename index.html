@@ -3,18 +3,39 @@
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Quantum Field Lab — an explorable quantum computer</title>
-  <meta name="description" content="Learn quantum computing by following a live quantum state through an isometric lab. Explore interference, entanglement, and Grover’s search with real calculations.">
+  <meta name="description" content="Learn quantum computing one small experiment at a time. Start with ordinary bits, make a prediction, try it, and see what changes. No timed lessons; equations are optional.">
   <meta name="theme-color" content="#112a39">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23112a39'/%3E%3Cellipse cx='32' cy='32' rx='24' ry='10' transform='rotate(-45 32 32)' fill='none' stroke='%2361d4bb' stroke-width='4'/%3E%3Cellipse cx='32' cy='32' rx='24' ry='10' transform='rotate(45 32 32)' fill='none' stroke='%2361d4bb' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23f7be50'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/learn.css">
 </head>
-<body>
+<body class="learning">
   <canvas id="stage" aria-label="Interactive isometric quantum lab. All stations and calculations are also available in the guide panel."></canvas>
   <header class="topbar">
     <a class="brand" href="./" aria-label="Quantum Field Lab home"><span class="brand-icon">q<span>·</span></span><span>QUANTUM<br><b>FIELD LAB</b></span></a>
-    <div class="edition"><span>AN EXPLORABLE COMPUTER</span><small>One state. Three experiments.</small></div>
-    <div class="header-actions"><button id="about-open" class="text-button">The science <span>↗</span></button><button id="guide-toggle" class="text-button" aria-expanded="true" aria-controls="inspector">Hide guide</button></div>
+    <div class="edition"><span>AN EXPLORABLE COMPUTER</span><small>Small experiments. At your pace.</small></div>
+    <div class="header-actions"><button id="learning-mode" class="text-button">Full lab</button><button id="about-open" class="text-button">The science <span>↗</span></button><button id="guide-toggle" class="text-button" aria-expanded="true" aria-controls="inspector">Hide guide</button></div>
   </header>
+  <div id="learn-map-caption"><span>YOUR EXPERIMENT BENCH</span><p>Predict. Try it. See what changes.</p></div>
+  <main id="learn-shell">
+    <section id="learn-bench" aria-label="Experiment and its readings">
+      <div class="bench-heading"><span>WHAT WE’LL DO</span><span>READ LEFT TO RIGHT →</span></div>
+      <div id="learn-sequence" aria-label="Operations in order"></div>
+      <div id="learn-target-wrap" hidden><span>Mark an answer:</span><div><button data-target="0" aria-pressed="false">00</button><button data-target="1" aria-pressed="false">01</button><button data-target="2" aria-pressed="false">10</button><button data-target="3" aria-pressed="true">11</button></div></div>
+      <div id="learn-output" aria-live="polite"></div>
+      <p id="learn-sample-note"></p>
+    </section>
+    <aside id="learn-guide" aria-label="One idea at a time">
+      <div class="learn-guide-top"><div class="learn-progress-row"><span id="learn-progress"></span><nav id="learn-navigation" aria-label="Learning steps"></nav></div><div id="learn-group"></div><h1 id="learn-title" tabindex="-1"></h1><p id="learn-intro"></p></div>
+      <div id="learn-guide-scroll">
+        <section id="learn-predict-area"><h2 id="learn-question"></h2><div id="learn-predictions"></div><button id="learn-run" class="learn-primary" disabled>Try it</button><p class="learn-gentle">Make a guess. Being unsure is a fine place to start.</p></section>
+        <section id="learn-discovery" hidden><p id="learn-your-guess"></p><h2 id="learn-observed" tabindex="-1"></h2><p id="learn-explanation"></p><button id="learn-repeat" class="learn-repeat">Try this again ↻</button><div class="learn-check"><span>PUT IT IN WORDS</span><h3 id="learn-check-question"></h3><div id="learn-reasons"></div><p id="learn-check-feedback" aria-live="polite"></p></div></section>
+        <section id="learn-finish" hidden><div class="finish-mark" aria-hidden="true">✓</div><h2>Say it simply.</h2><p id="learn-finish-copy"></p><p>Try explaining that to someone without using an equation. You can revisit any step above.</p><button id="learn-extra" class="learn-primary">Explore two connected qubits →</button><button id="learn-full-lab" class="learn-secondary">Open the full lab</button><button id="learn-again" class="learn-repeat">Start again ↻</button></section>
+        <details id="learn-math"><summary>Show the maths <span>Optional</span></summary><p id="learn-math-copy"></p><p id="learn-note"></p></details>
+      </div>
+      <div class="learn-footer"><button id="learn-back">← Back</button><button id="learn-next" class="learn-primary" disabled>Continue →</button></div>
+    </aside>
+  </main>
   <nav id="hud" aria-label="Experiments">
     <div class="experiment-tabs">
       <button class="lesson active" data-mode="interference" aria-pressed="true"><span>01</span> Interference</button>
@@ -50,10 +71,10 @@
   </section>
   <dialog id="about" aria-labelledby="about-title">
     <button id="about-close" class="modal-close" aria-label="Close science notes">×</button><div class="eyebrow">BEHIND THE LAB</div><h2 id="about-title">Real mathematics.<br>A place to understand it.</h2>
-    <p>Follow a quantum state through three small circuits. Stop at any building, inspect the amplitudes, and change the experiment. The full guided journey takes about 8 minutes at 1×; each first visit waits roughly 25–30 seconds for reading.</p>
+    <p>Start with an ordinary bit, then predict and test one quantum idea at a time. The beginner path waits for your actions; nothing advances on a reading timer. Equations are optional. The Full lab keeps the original three animated circuit tours and their detailed controls.</p>
     <h3>How much of it is real</h3>
-    <p><strong>Computed:</strong> real-valued statevectors, H and Z gates, CNOT, a four-candidate phase oracle and diffusion, squared-amplitude probabilities, measurement collapse, and independently sampled shots. The carrier’s bars come directly from the current state. Our displayed bit order is q0 q1.</p>
-    <p><strong>Scaled down:</strong> one or two qubits; four candidates and one target in the search. Each sample represents a fresh circuit run. The 1,024 runs are computed together instead of animating every trip.</p>
+    <p><strong>Computed:</strong> real-valued statevectors, X, H and Z gates, CNOT, a four-candidate phase oracle and diffusion, squared-amplitude probabilities, measurement collapse, and independently sampled shots. The carrier’s bars come directly from the current state. Our displayed bit order is q0 q1.</p>
+    <p><strong>Scaled down:</strong> one or two qubits; four candidates and one target in the search. Each sample represents a fresh circuit run. Beginner experiments use one or 40 fresh runs. The full lab uses 1,024. Repeated runs are computed together instead of animating every trip.</p>
     <p><strong>Assumed:</strong> ideal initialization and gates; Z-basis measurement. Optional readout noise flips each output bit independently with the chosen probability. It does not model gate errors or decoherence. Sampling uses browser pseudorandom numbers.</p>
     <p><strong>Visual metaphor:</strong> buildings, moving carriers, travel time, and the layout are invented. Qubits do not travel through a town. Amplitude bars are simulator information that a single hardware measurement cannot reveal. Only real-amplitude gates are included. Oracle construction and hardware runtime costs are omitted.</p>
     <h3>Keep these distinctions</h3><p>Negative amplitudes are not negative probabilities. Matching Bell outputs alone do not prove entanglement, and entanglement cannot send a controllable message faster than light. Quantum computers do not let us read every answer at once.</p>
@@ -65,6 +86,6 @@
     </ul><p class="credit">Inspired by <a href="https://laurentiugabriel.github.io/blog/articles/how-i-use-llms-to-learn/" target="_blank" rel="noreferrer">Laurentiu Raducu’s learning flow</a> and the MIT-licensed <a href="https://github.com/LaurentiuGabriel/learnscape" target="_blank" rel="noreferrer">Learnscape engine</a>. Made for <a href="https://github.com/saushank3poch" target="_blank" rel="noreferrer">saushank3poch</a>.</p>
   </dialog>
   <noscript>This lab needs JavaScript to run its quantum calculations and animation. Enable JavaScript to explore the experiments.</noscript>
-  <script src="js/iso.js"></script><script src="js/model.js"></script><script src="js/world.js"></script><script src="js/sim.js"></script><script src="js/render.js"></script><script src="js/ui.js"></script><script src="js/main.js"></script>
+  <script src="js/iso.js"></script><script src="js/model.js"></script><script src="js/world.js"></script><script src="js/sim.js"></script><script src="js/render.js"></script><script src="js/ui.js"></script><script src="js/learn-model.js"></script><script src="js/learn.js"></script><script src="js/main.js"></script>
 </body>
 </html>

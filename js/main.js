@@ -42,6 +42,15 @@
   }
 
   function measureLayout() {
+    if (global.Beginner && global.Beginner.active) {
+      var bench = document.getElementById('learn-bench').getBoundingClientRect();
+      var guide = document.getElementById('learn-guide').getBoundingClientRect();
+      layout.top = viewW <= 900 ? 78 : 125;
+      layout.panel = viewW <= 900 ? 0 : guide.width + 50;
+      layout.sheet = 0;
+      layout.dock = viewW <= 900 ? Math.max(0, viewH - 205) : viewH - bench.top + 8;
+      return;
+    }
     var mobile = viewW <= 900 && viewH > 540;
 
     if (elTopbar) {
@@ -102,7 +111,7 @@
   /* The default view rides with the van rather than showing the whole town,
      because the tour is about what the van is doing. Zooming out to the whole
      place is one click, or a double-click on the map. */
-  function defaultScale() { return viewW <= 900 ? 0.55 : 0.83; }
+  function defaultScale() { if(global.Beginner && global.Beginner.active)return viewW<=900?.38:.68;return viewW <= 900 ? 0.55 : 0.83; }
 
   function fitWorld() {
     var w = (World.GW + World.GH) * Iso.TW;
@@ -149,6 +158,7 @@
   /* Hit-testing happens in grid space against each district's radius, not
      against pixels, so it costs one unproject and a few distance checks. */
   function pick(sx, sy) {
+    if(global.Beginner && global.Beginner.active)return null;
     var w = screenToWorld(sx, sy);
     var best = null, bestD = 1e9;
     for (var i = 0; i < World.districts.length; i++) {
@@ -259,6 +269,7 @@
   function setFollow(v) { follow = v; followBox.checked = v; }
 
   document.addEventListener('keydown', function (e) {
+    if(global.Beginner && global.Beginner.active)return;
     if (['INPUT','SELECT','TEXTAREA','BUTTON','A'].includes(e.target.tagName) || document.getElementById('about').open) return;
     switch (e.key.toLowerCase()) {
       case ' ': e.preventDefault(); Sim.toggle(); UI.paint(true); break;
@@ -285,7 +296,7 @@
      re-measure when they actually resize instead of polling every frame. */
   if (global.ResizeObserver) {
     var ro = new global.ResizeObserver(function () { measureLayout(); });
-    [elDock, elPanel, elHud, elTopbar].forEach(function (n) { if (n) ro.observe(n); });
+    [elDock, elPanel, elHud, elTopbar, document.getElementById('learn-bench'), document.getElementById('learn-guide')].forEach(function (n) { if (n) ro.observe(n); });
   }
 
   /* ------------------------------------------------------------------ loop */
@@ -302,9 +313,10 @@
     last = now;
     clock += dt;
 
-    Sim.update(dt);
+    var learning = global.Beginner && global.Beginner.active;
+    if(learning) global.Beginner.update(dt); else Sim.update(dt);
 
-    var target = UI.takeFlyTo();
+    var target = learning ? global.Beginner.takeFlyTo() : UI.takeFlyTo();
     if (target) {
       var p = Iso.project(target.x, target.y, 0);
       cam.x += (p.x - cam.x) * 0.5;
@@ -323,7 +335,7 @@
 
     syncOffsets();
     Renderer.draw(canvas, cam, clock, UI.activeDistrict(), hoverDistrict);
-    UI.paint(false);
+    if(!learning) UI.paint(false);
   }
 
   /* ------------------------------------------------------------------ boot */

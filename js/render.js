@@ -96,13 +96,17 @@
     I.orientedBox(c,{x:v.x,y:v.y,z:.18,len:2.25,wid:1.22,h:.3,hx:v.dx,hy:v.dy,color:'#294b5a'});
     I.orientedBox(c,{x:v.x,y:v.y,z:.48,len:2.4,wid:1.3,h:.47,hx:v.dx,hy:v.dy,color:'#efbd56'});
     var px=-v.dy,py=v.dx;
-    a.forEach(function(am,i){
+    if(!(global.Beginner && global.Beginner.active)) a.forEach(function(am,i){
       var across=(i-(a.length-1)/2)*.49;
       var xx=v.x+across, yy=v.y-.1;
       var height=.12+Math.abs(am)*1.18;
       box(c,xx-.17,yy-.17,.97,.34,.34,height,am<0?'#9870bf':'#138c7e');
       var p=P(xx,yy,1.15+height);c.font='bold 12px monospace';c.textAlign='center';c.fillStyle=am<0?'#715295':'#176d66';c.fillText(am===0?'0':am<0?'−':'+',p.x,p.y);
     });
+    if(global.Beginner && global.Beginner.active) {
+      var top=P(v.x,v.y,1.3);var probs=Q.probabilities(a);var definite=probs.findIndex(function(p){return p>.999;});
+      c.fillStyle='#244b58';c.font='600 25px monospace';c.textAlign='center';c.fillText(definite<0?'?':Q.label(definite,Q.qubits(a)),top.x,top.y);
+    }
     var front=P(v.x+v.dx*1.05,v.y+v.dy*1.05,.74);c.fillStyle='#fff4bd';c.beginPath();c.arc(front.x,front.y,3,0,Math.PI*2);c.fill();
   }
   function scenery(c,o){
@@ -131,6 +135,11 @@
       placed.push({x:sx-width/2,y:yy,w:width,h:height});
     }
     var st=S.state,n=Q.qubits(st.vector);
+    if(global.Beginner && global.Beginner.active){
+      var l=global.Beginner.state;
+      label(v.x,v.y,2.8,l.busy?'TRYING YOUR EXPERIMENT':l.result?'FIRST READING: '+Q.label(l.result.outcomes[0],n):'READY TO TRY','#315e6c',true);
+      return;
+    }
     var read=st.outcome===null?'STATE '+(n===1?'|ψ⟩':'|ψ₀₁⟩'):'MEASURED '+Q.label(st.outcome,n);
     label(v.x,v.y,3.0,read,'#315e6c',true);
     if(!labels)return;
@@ -143,7 +152,7 @@
     var c=canvas.getContext('2d');c.setTransform(1,0,0,1,0,0);c.fillStyle='#e9f0f4';c.fillRect(0,0,canvas.width,canvas.height);
     c.setTransform(cam.dpr*cam.scale,0,0,cam.dpr*cam.scale,cam.dpr*cam.ox,cam.dpr*cam.oy);
     ground(c);
-    var items=W.districts.map(function(d){return {depth:d.x+d.y-2.5,draw:function(){landmark(c,d,clock);}};});
+    var items=W.districts.map(function(d){return {depth:d.x+d.y-2.5,draw:function(){c.save();if(global.Beginner && global.Beginner.active && d.id!==S.state.station)c.globalAlpha=.3;landmark(c,d,clock);c.restore();}};});
     [[1,1],[1,4],[25,3],[25,6],[25,16],[4,21],[8,21],[19,21],[24,20],[1,18],[8,-.8],[16,-.8]].forEach(function(p,i){
       var o={x:p[0],y:p[1],kind:i%3?'lamp':'server'};items.push({depth:o.x+o.y+.7,draw:function(){scenery(c,o);}});
     });
