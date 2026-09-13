@@ -108,8 +108,11 @@
       </section>
 
       <section class="principle" id="fp-state">
-        <div class="principle-number">02</div><div><h2>A qubit still gives one answer when read.</h2>
-        <p>A <strong>qubit</strong> is a physical quantum system with two chosen reading outcomes, labelled 0 and 1. It can be prepared in a <strong>superposition</strong> of 0 and 1, with contributions to both outcomes that can later interfere.</p>
+        <div class="principle-number">02</div><div><h2>A qubit uses the quantum behaviour of matter.</h2>
+        <p>At the scale of atoms and electrons, nature behaves in ways that our everyday picture of an on/off switch cannot fully describe. <strong>Quantum physics</strong> describes this behaviour. A quantum computer uses it to store and process information.</p>
+        <p>For example, we can use an electron’s <strong>spin</strong>, an intrinsic quantum property. Measuring spin along a chosen direction gives one of two results, called “up” and “down”. We label those results <strong>0</strong> and <strong>1</strong>. Controlling this two-state quantum system gives us a <strong>qubit</strong>.</p>
+        <p>Here is the new possibility: quantum physics lets us prepare a <strong>superposition</strong> of those two states. It has contributions to both 0 and 1, with a relationship that lets them reinforce or cancel in later operations. <strong>When we finally read it, we still get just one result: 0 or 1.</strong></p>
+        <p class="principles-note">The key is controlling and preserving this quantum behaviour. Ordinary chips also obey quantum physics, but use definite bit values for their logic. A qubit must be protected from disturbances that would spoil the interference we want to use. <a href="https://www.nist.gov/quantum-information-science/quantum-computing-explained" target="_blank" rel="noreferrer">NIST: the physical systems behind qubits ↗</a></p>
         <p>To predict what it does, we track a number called an <strong>amplitude</strong> for each possible reading. In this lab those numbers can be positive or negative. Squaring an amplitude gives the chance of that reading.</p>
         <div class="principles-equivalence"><span><b>+0.707…</b> amplitude → <b>50%</b> chance</span><span><b>−0.707…</b> amplitude → <b>50%</b> chance</span></div>
         <p>So an amplitude is more than a probability. Its sign can change the outcome of a later operation, even when the chances look identical right now.</p>
