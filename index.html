@@ -18,13 +18,14 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/learn.css">
   <link rel="stylesheet" href="css/power.css">
+  <link rel="stylesheet" href="css/principles.css">
 </head>
 <body class="learning">
   <canvas id="stage" aria-label="Interactive isometric quantum lab. All stations and calculations are also available in the guide panel."></canvas>
   <header class="topbar">
     <a class="brand" href="./" aria-label="Quantum Field Lab home"><span class="brand-icon">q<span>·</span></span><span>QUANTUM<br><b>FIELD LAB</b></span></a>
     <div class="edition"><span>AN EXPLORABLE COMPUTER</span><small>Small experiments. At your pace.</small></div>
-    <nav class="header-actions" aria-label="Main sections"><button id="start-simple" class="text-button" aria-controls="learn-shell">Start Simple</button><button id="walkthrough-open" class="text-button" aria-controls="power-view">Practical Example</button><button id="learning-mode" class="text-button" aria-controls="inspector">Deep Dive</button><button id="about-open" class="text-button" aria-haspopup="dialog" aria-controls="about">sources</button></nav>
+    <nav class="header-actions" aria-label="Main sections"><button id="start-simple" class="text-button" aria-controls="learn-shell">Start Simple</button><button id="principles-open" class="text-button" aria-controls="principles-view">First Principles</button><button id="walkthrough-open" class="text-button" aria-controls="power-view">Practical Example</button><button id="learning-mode" class="text-button" aria-controls="inspector">Deep Dive</button><button id="about-open" class="text-button" aria-haspopup="dialog" aria-controls="about">sources</button></nav>
   </header>
   <div id="learn-map-caption"><span>YOUR EXPERIMENT BENCH</span><p>Predict. Try it. See what changes.</p></div>
   <main id="learn-shell">
@@ -91,6 +92,65 @@
     <details><summary>How the comparison is calculated · optional</summary><p>Exactly one uniformly hidden target among N candidates. The classical procedure scans in order and confirms its match: average (N + 1)/2 checks, worst case N. If the last candidate were inferred without verification, that procedure could save one check on the last-target case. This is not a comparison with indexed or sorted databases.</p><p>The quantum model starts with equal amplitudes and applies Grover’s phase oracle and diffusion k times, where θ = asin(1/√N) and k = floor(π/(4θ)). It samples one outcome and spends one additional rule call verifying it. Success probability is sin²((2k + 1)θ). Retrying prepares a fresh state; cumulative calls remain counted.</p><p>The browser simulates these operations on an ordinary computer. It is teaching an algorithmic advantage, not demonstrating faster hardware. <a href="https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms/grover-algorithm/number-of-iterations" target="_blank" rel="noreferrer">IBM: iteration counts and success probabilities ↗</a></p></details>
     <div class="power-footer"><button id="power-back">← Back to the lesson</button><button id="power-next" class="learn-primary" disabled>Where could this help in real life? →</button></div>
   </section>
+  <section id="principles-view" hidden aria-labelledby="principles-title">
+    <div class="principles-page">
+      <div class="power-kicker">FIRST PRINCIPLES · BUILD THE IDEA FROM THE GROUND UP</div>
+      <h1 id="principles-title" tabindex="-1">What makes a computer quantum?</h1>
+      <p class="principles-intro">Start with three actions: store something, change it, read it. Then change the rules for what can be stored and how it combines.</p>
+      <p class="principles-note">No prior physics needed. We start from the quantum rules tested in experiments; we do not derive why nature follows those rules.</p>
+      <nav class="principles-contents" aria-label="First principles topics"><a href="#fp-bit">1. A bit</a><a href="#fp-state">2. A quantum state</a><a href="#fp-interference">3. Why signs matter</a><a href="#fp-many">4. More qubits</a><a href="#fp-useful">5. Useful work</a></nav>
+
+      <section class="principle" id="fp-bit">
+        <div class="principle-number">01</div><div><h2>A computer needs something it can change.</h2>
+        <p>An ordinary chip uses physical states, such as two voltage ranges, to represent <strong>0</strong> and <strong>1</strong>. One of these two-valued units is a <strong>bit</strong>. Many bits can encode a number, a photo, or an instruction.</p>
+        <div class="bit-example"><span>Stored bit <strong id="fp-bit-value" aria-live="polite">0</strong></span><button id="fp-flip">Flip the bit →</button><span id="fp-bit-copy">Read it now: 0.</span></div>
+        <p>Computation means applying rules to stored information. A flip changes 0 to 1, or 1 to 0. A long sequence of simple operations can do useful work.</p></div>
+      </section>
+
+      <section class="principle" id="fp-state">
+        <div class="principle-number">02</div><div><h2>A qubit still gives one answer when read.</h2>
+        <p>A <strong>qubit</strong> is a physical quantum system with two chosen reading outcomes, labelled 0 and 1. It can be prepared in a <strong>superposition</strong> of 0 and 1, with contributions to both outcomes that can later interfere.</p>
+        <p>To predict what it does, we track a number called an <strong>amplitude</strong> for each possible reading. In this lab those numbers can be positive or negative. Squaring an amplitude gives the chance of that reading.</p>
+        <div class="principles-equivalence"><span><b>+0.707…</b> amplitude → <b>50%</b> chance</span><span><b>−0.707…</b> amplitude → <b>50%</b> chance</span></div>
+        <p>So an amplitude is more than a probability. Its sign can change the outcome of a later operation, even when the chances look identical right now.</p>
+        <p class="principles-note">The + and − signs are a simple case of <strong>phase</strong>. General quantum states use complex numbers; these examples only need real numbers. Each box below is a possible answer for one qubit, not a separate qubit.</p></div>
+      </section>
+
+      <section class="principle" id="fp-interference">
+        <div class="principle-number">03</div><div><h2>Signs matter when amplitudes combine.</h2>
+        <p>The <strong class="fp-blue">blue operation</strong> combines the two amplitudes. Equal signs can add; opposite signs can cancel. This is <strong>interference</strong>. Try the same sequence with one change in the middle.</p>
+        <div class="principles-experiment">
+          <div class="fp-mode-controls" role="group" aria-label="Change the middle operation"><button data-fp-mode="plain" aria-pressed="true">Leave it alone</button><button data-fp-mode="purple" aria-pressed="false">Add purple</button><button data-fp-mode="read" aria-pressed="false">Read in the middle</button></div>
+          <ol id="fp-sequence" aria-label="Operations in order"></ol>
+          <div class="fp-experiment-body">
+            <div><p class="fp-board-label">ONE QUBIT · TWO POSSIBLE ANSWERS</p><div id="fp-boxes"></div><p class="principles-note">These numbers are the simulator’s view. A hardware reading gives one answer, not both amplitudes.</p></div>
+            <div id="fp-explanation" aria-live="polite" aria-atomic="true"><span id="fp-position"></span><h3 id="fp-step-title"></h3><p id="fp-step-copy"></p><p id="fp-step-meaning"></p></div>
+          </div>
+          <div class="fp-actions"><button id="fp-prev">← Back</button><button id="fp-next" class="learn-primary">Next: apply blue →</button><button id="fp-reset">Start a fresh run ↻</button></div>
+          <details><summary>How blue calculates the new amplitudes · optional</summary><p>If the incoming amplitudes are a and b, blue makes the new ones (a + b)/√2 and (a − b)/√2. Purple changes b to −b. The √2 keeps the total probability at 100%. These are ideal H and Z gates.</p></details>
+        </div>
+        <p><strong>Why this is different from a random bit:</strong> both +/+ and +/− give 50/50 readings immediately, but blue can tell them apart: one becomes certain 0, the other certain 1. A classical 50/50 probability list has no sign relationship to preserve.</p></div>
+      </section>
+
+      <section class="principle" id="fp-many">
+        <div class="principle-number">04</div><div><h2>More qubits create more possible readings.</h2>
+        <div class="fp-registers"><div><b>1 qubit</b><span>0 · 1</span><small>2 possible readings</small></div><div><b>2 qubits</b><span>00 · 01 · 10 · 11</span><small>4 possible readings</small></div><div><b>3 qubits</b><span>000 · 001 · … · 111</span><small>8 possible readings</small></div></div>
+        <p>A general quantum state has an amplitude for each possible bit string. Operations change these amplitudes together. Some joint states are <strong>entangled</strong>: they cannot be described as an independent state for each qubit.</p>
+        <p><strong>But one reading still returns just one string.</strong> Reading three qubits might give 101. It does not return all eight possibilities. More amplitudes alone do not make a useful algorithm.</p></div>
+      </section>
+
+      <section class="principle" id="fp-useful">
+        <div class="principle-number">05</div><div><h2>The job is to make useful answers likely.</h2>
+        <p>A quantum algorithm must connect the problem to operations that make interference useful. In our search example, a rule recognises a correct candidate and reverses its amplitude’s sign. A second operation combines amplitudes to raise its chance. Repeat the right number of rounds, then read one candidate and check it.</p>
+        <div class="fp-payoff"><strong>With 16 candidates and one hidden match:</strong><p>An ordinary scan averages <b>8.5 checks</b>. This ideal quantum search uses <b>3 rounds + 1 final check</b>, with a <b>96.1% chance</b> of success per attempt. A miss means more work.</p></div>
+        <p>As this kind of search grows, classical checks grow roughly with the number of candidates; quantum rounds grow roughly with its square root. That is a reason quantum algorithms can be powerful for particular problems.</p>
+        <p class="principles-note">This counts uses of a suitable checking rule, not chip speed. Preparing states, building the rule, other gates, retries and error correction also cost work. Ordinary chips remain essential, and quantum computing does not speed up every task.</p>
+        <button id="fp-practical" class="learn-primary">Put these ideas to work: Practical Example →</button>
+        <p class="fp-foundations">Read the foundations: <a href="https://learn.microsoft.com/en-us/azure/quantum/concepts-the-qubit" target="_blank" rel="noreferrer">Microsoft: qubits and measurement</a> · <a href="https://quantum.cloud.ibm.com/learning/en/courses/basics-of-quantum-information/single-systems/quantum-information" target="_blank" rel="noreferrer">IBM: amplitudes and interference</a> · <a href="https://quantum.cloud.ibm.com/learning/en/courses/fundamentals-of-quantum-algorithms/grover-algorithm/number-of-iterations" target="_blank" rel="noreferrer">IBM: search probabilities</a></p></div>
+      </section>
+      <button id="principles-back" class="learn-repeat">← Return to where I was</button>
+    </div>
+  </section>
   <nav id="hud" aria-label="Experiments">
     <div class="experiment-tabs">
       <button class="lesson active" data-mode="interference" aria-pressed="true"><span>01</span> Interference</button>
@@ -141,6 +201,6 @@
     </ul><p class="credit">Inspired by <a href="https://laurentiugabriel.github.io/blog/articles/how-i-use-llms-to-learn/" target="_blank" rel="noreferrer">Laurentiu Raducu’s learning flow</a> and the MIT-licensed <a href="https://github.com/LaurentiuGabriel/learnscape" target="_blank" rel="noreferrer">Learnscape engine</a>. Made for <a href="https://github.com/saushank3poch" target="_blank" rel="noreferrer">saushank3poch</a>.</p>
   </dialog>
   <noscript>This lab needs JavaScript to run its quantum calculations and animation. Enable JavaScript to explore the experiments.</noscript>
-  <script src="js/iso.js"></script><script src="js/model.js"></script><script src="js/world.js"></script><script src="js/sim.js"></script><script src="js/render.js"></script><script src="js/ui.js"></script><script src="js/learn-model.js"></script><script src="js/search-model.js"></script><script src="js/search-replay.js"></script><script src="js/power.js"></script><script src="js/learn.js"></script><script src="js/main.js"></script>
+  <script src="js/iso.js"></script><script src="js/model.js"></script><script src="js/world.js"></script><script src="js/sim.js"></script><script src="js/render.js"></script><script src="js/ui.js"></script><script src="js/learn-model.js"></script><script src="js/search-model.js"></script><script src="js/search-replay.js"></script><script src="js/power.js"></script><script src="js/principles.js"></script><script src="js/learn.js"></script><script src="js/main.js"></script>
 </body>
 </html>

@@ -1,6 +1,10 @@
 # Quantum Field Lab
 
-An interactive quantum computing lab for saushank3poch. The default experience starts with an ordinary bit and teaches one idea at a time: predict, run the experiment, observe, and explain the result. Mathematics is optional. The original detailed circuit tours remain available through **Full lab**.
+An interactive quantum computing lab for saushank3poch. The default experience starts with an ordinary bit and teaches one idea at a time: predict, run the experiment, observe, and explain the result. Mathematics is optional. The original detailed circuit tours remain available through **Deep Dive**.
+
+## First Principles
+
+The **First Principles** section builds from physical bits to amplitudes, phase, measurement, multiple qubits, and algorithmic advantage. It includes a bit flip and a step-by-step comparison of H–H, H–Z–H, and H–measurement–H using the shared quantum model. Amplitudes and reading probabilities are labelled separately. Back/next preserves the sampled run; changing the middle operation or starting a fresh run resets it. Returning restores the previous section without discarding its result. Link directly with `#first-principles`.
 
 ## Run
 

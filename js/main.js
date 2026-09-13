@@ -269,6 +269,7 @@
   function setFollow(v) { follow = v; followBox.checked = v; }
 
   document.addEventListener('keydown', function (e) {
+    if(!document.getElementById('principles-view').hidden)return;
     if(global.Beginner && global.Beginner.active)return;
     if (['INPUT','SELECT','TEXTAREA','BUTTON','A'].includes(e.target.tagName) || document.getElementById('about').open) return;
     switch (e.key.toLowerCase()) {

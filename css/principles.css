@@ -1,0 +1,80 @@
+/* First principles shares the lab's blue gates, purple phase and amber reading. */
+body.showing-principles #learn-shell, body.showing-principles #learn-map-caption,
+body.showing-principles #power-view, body.showing-principles #hud,
+body.showing-principles #inspector, body.showing-principles #dock,
+body.showing-principles .map-tools, body.showing-principles #tooltip { display: none; }
+body.showing-principles #stage { visibility: hidden; }
+#principles-view { position: fixed; inset: 87px 0 0; overflow-y: auto; overscroll-behavior: contain; background: #f3f7f5; color: #193d48; z-index: 12; }
+.principles-page { max-width: 1060px; margin: auto; padding: 44px 30px 64px; }
+#principles-title { font-size: clamp(32px, 4.5vw, 52px); letter-spacing: -.035em; line-height: 1.08; margin: 16px 0 20px; max-width: 720px; }
+.principles-intro { font-size: 21px; line-height: 1.55; max-width: 740px; }
+.principles-note { font-size: 14px; line-height: 1.6; color: #506971; }
+.principles-contents { display: flex; flex-wrap: wrap; gap: 12px 24px; padding: 20px 0; margin-top: 24px; border-block: 1px solid #c6d7d5; font-size: 14px; color: #216d64; }
+.principles-contents a { text-underline-offset: 4px; }
+.principle { display: grid; grid-template-columns: 46px minmax(0, 1fr); gap: 22px; padding: 40px 0; border-bottom: 1px solid #c6d7d5; scroll-margin-top: 20px; }
+.principle-number { font: 22px ui-monospace, monospace; color: #428579; padding-top: 6px; }
+.principle h2 { font-size: clamp(24px, 3vw, 30px); line-height: 1.2; letter-spacing: -.02em; margin: 0 0 20px; }
+.principle p { font-size: 17px; line-height: 1.7; max-width: 790px; margin: 14px 0; }
+.principle p.principles-note, .principle p.fp-foundations { font-size: 14px; }
+.bit-example { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; padding: 18px 0; }
+.bit-example > span:first-child { display: flex; align-items: center; gap: 14px; }
+#fp-bit-value { display: inline-grid; place-items: center; width: 54px; height: 58px; border-radius: 6px; background: #e0eeea; border: 1px solid #9fc5bb; font-size: 32px; }
+.principles-page button:not(.learn-primary):not(.learn-repeat) { padding: 10px 14px; border: 1px solid #b2c9cc; border-radius: 6px; background: #fff; font: inherit; }
+.principles-equivalence { display: flex; flex-wrap: wrap; gap: 12px 28px; padding: 18px 0; font-size: 16px; }
+.principles-equivalence span { padding-left: 14px; border-left: 3px solid #9b7db7; }
+.fp-blue { color: #28618a; }
+.principles-experiment { margin: 24px 0; border: 1px solid #bdcfd1; border-radius: 12px; background: #fff; padding: 24px; }
+.fp-mode-controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.fp-mode-controls button[aria-pressed=true] { background: #195d56 !important; color: #fff; border-color: #195d56 !important; }
+#fp-sequence { list-style: none; display: flex; gap: 7px; padding: 0; margin: 24px 0; }
+#fp-sequence li { flex: 1; text-align: center; font-size: 13px; line-height: 1.4; padding: 10px 5px; border: 1px solid #d2dfe3; background: #eef4f5; border-radius: 5px; }
+#fp-sequence .blue { background: #e2edf8; border-color: #94b9d7; color: #2c648b; }
+#fp-sequence .purple { background: #eee7f7; border-color: #ba9ed5; color: #795599; }
+#fp-sequence .reader { background: #fcf1dc; border-color: #debf81; color: #86632f; }
+#fp-sequence [aria-current=step] { outline: 2px solid #287e70; outline-offset: 2px; font-weight: 700; }
+.fp-experiment-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; }
+.principle .fp-board-label { font-size: 11px; letter-spacing: .06em; margin: 4px 0 14px; }
+#fp-boxes { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fp-box { border: 1px solid #bed0d5; border-radius: 8px; padding: 14px 10px; text-align: center; background: #f6fafb; }
+.fp-box > strong { display: block; font-size: 32px; }
+.fp-box > span, .fp-box > small { display: block; font-size: 13px; margin-top: 7px; }
+.fp-box > b { display: block; font: 19px ui-monospace, monospace; margin-top: 8px; }
+.fp-box.negative > b { color: #795599; }
+.fp-box.selected { background: #fcf1dc; border: 2px solid #b48b3b; }
+.fp-box.unread { opacity: .55; }
+.fp-chance { height: 6px; background: #dce8e8; margin-top: 12px; border-radius: 3px; overflow: hidden; }
+.fp-chance i { display: block; height: 100%; background: #348678; transition: width .2s; }
+#fp-position { font-size: 12px; color: #477a71; font-weight: 700; }
+#fp-step-title { font-size: 21px; line-height: 1.25; margin: 10px 0; }
+#fp-explanation p { font-size: 15px; line-height: 1.65; }
+#fp-step-meaning { border-left: 3px solid #87b5a8; padding-left: 12px; }
+.fp-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+.principles-experiment details { padding-top: 15px; border-top: 1px solid #dbe5e7; font-size: 14px; }
+.principles-experiment summary { cursor: pointer; }
+.fp-registers { display: flex; flex-wrap: wrap; gap: 22px; margin: 24px 0; }
+.fp-registers > div { flex: 1; min-width: 180px; border-left: 2px solid #9ac1b8; padding-left: 15px; }
+.fp-registers span, .fp-registers small { display: block; margin-top: 8px; }
+.fp-registers span { font-family: ui-monospace, monospace; }
+.fp-registers small { color: #536c74; }
+.fp-payoff { background: #e0eee4; border-radius: 10px; padding: 20px; margin: 24px 0; }
+.fp-payoff p { margin-bottom: 0; }
+.fp-foundations { color: #486c72; }
+#principles-back { margin-top: 24px; }
+@media (max-width: 1200px) { .topbar .edition { display: none; } }
+@media (max-width: 900px) { #principles-view { top: 69px; } }
+@media (max-width: 600px) {
+  .topbar .header-actions { flex-wrap: wrap; justify-content: flex-end; column-gap: 12px; row-gap: 0; }
+  .topbar .text-button { padding-block: 5px; }
+  .principles-page { padding: 28px 20px 40px; }
+  .principles-intro { font-size: 18px; }
+  .principle { grid-template-columns: minmax(0, 1fr); gap: 10px; padding-block: 28px; }
+  .principle-number { font-size: 15px; }
+  .principle p { font-size: 16px; }
+  .principles-experiment { padding: 16px; margin-inline: -4px; }
+  .fp-experiment-body { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  #fp-sequence { flex-wrap: wrap; }
+  #fp-sequence li { flex: 1 1 27%; }
+  .fp-mode-controls button { font-size: 13px !important; }
+  .fp-actions button { font-size: 14px !important; }
+}
+@media (prefers-reduced-motion: reduce) { .fp-chance i { transition: none; } }

@@ -272,6 +272,7 @@
     document.querySelectorAll('[data-target]').forEach(function(b){b.addEventListener('click',function(){state.target=Number(b.dataset.target);resetExperiment();});});
     enter();
     if(root.location.hash==='#advantage')openWalkthrough();
+    root.Principles.init();
   }
   function openWalkthrough() {
     if(!$('power-view').hidden){$('power-title').focus();return;}
@@ -280,12 +281,12 @@
     resetExperiment();root.Power.open(finishBasics);
   }
   function markSection(id) {
-    ['start-simple','walkthrough-open','learning-mode'].forEach(function(name){
+    ['start-simple','principles-open','walkthrough-open','learning-mode'].forEach(function(name){
       if(name===id)$(name).setAttribute('aria-current','page');else $(name).removeAttribute('aria-current');
     });
   }
   function update(dt) {
-    if(!api.active || !state.busy || $('about').open) return;
+    if(!api.active || !state.busy || $('about').open || !$('principles-view').hidden) return;
     state.elapsed+=dt;
     var frames=state.result.frames,index=Math.min(frames.length-1,Math.floor(state.elapsed/.45));
     state.frame=index;S.state.vector=frames[index].slice();
